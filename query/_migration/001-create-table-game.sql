@@ -2,6 +2,7 @@ create table game(
         id int auto_increment primary key,
         code varchar(8) not null,
         created datetime not null,
+        started datetime,
         completed datetime,
         creator int not null,
         scenario varchar(32) not null,
