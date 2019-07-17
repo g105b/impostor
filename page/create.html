@@ -1,0 +1,33 @@
+<form>
+	<h1>Create game</h1>
+
+	<label>
+		<span>Choose a scenario:</span>
+		<select name="scenario">
+			<option>Test</option>
+		</select>
+	</label>
+
+	<label>
+		<span>Game type:</span>
+		<select name="type">
+			<option>Question limit</option>
+			<option>Time limit</option>
+		</select>
+	</label>
+
+	<label>
+		<span>Limit:</span>
+		<input type="number" value="10" min="5" max="100" />
+	</label>
+
+	<label>
+		<span>Round type:</span>
+		<select name="round">
+			<option>Remote audio</option>
+			<option>Party game</option>
+		</select>
+	</label>
+
+	<button name="do" value="start">Start</button>
+</form>

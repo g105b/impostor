@@ -1,0 +1,11 @@
+{
+    "require": {
+        "phpgt/webengine": "dev-master"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Imposter\\": "./class"
+        }
+    }
+}

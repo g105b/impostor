@@ -1,0 +1,34 @@
+<form method="post">
+	<ul class="audio-list">
+		<li>
+			<audio>
+				<source src="/data/audio/123.mp3" type="audio/mp3" />
+				<p>
+					<span>Playername</span>'s audio: <a href="/data/audio/123.mp3">123.mp3</a>.
+				</p>
+			</audio>
+		</li>
+		<li>
+			<audio>
+				<source src="/data/audio/123.mp3" type="audio/mp3" />
+				<p>
+					<span>Playername</span>'s audio: <a href="/data/audio/123.mp3">123.mp3</a>.
+				</p>
+			</audio>
+		</li>
+		<li>
+			<audio>
+				<source src="/data/audio/123.mp3" type="audio/mp3" />
+				<p>
+					<span>Playername</span>'s audio: <a href="/data/audio/123.mp3">123.mp3</a>.
+				</p>
+			</audio>
+		</li>
+	</ul>
+	<span data-bind:text="status">Waiting for someone...</span>
+
+	<label>
+		<span>Record your message</span>
+		<input type="file" accept="audio/*;capture=microphone" />
+	</label>
+</form>
