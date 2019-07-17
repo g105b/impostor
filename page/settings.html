@@ -1,14 +1,15 @@
-<form>
+<form method="post" enctype="multipart/form-data">
 	<h1>Settings</h1>
 
 	<label>
 		<span>What is your name?</span>
-		<input name="name" required />
+		<input name="name" required data-bind:value="name" />
 	</label>
 
 	<label>
 		<span>Look shifty...</span>
-		<input type="file" accept="image/*;capture=camera" />
+		<img class="userpic" src="/asset/img/default.svg" alt="Your user picture" data-bind:src="user-picture-path" />
+		<input type="file" name="picture" accept="image/*;capture=camera" />
 	</label>
 
 	<button name="do" value="save">Save</button>

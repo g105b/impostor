@@ -1,3 +1,9 @@
+body.uri-- {
+	.back-link {
+		display: none;
+	}
+}
+
 form {
 	label {
 		display: block;
@@ -7,4 +13,9 @@ form {
 			display: block;
 		}
 	}
+}
+
+.userpic {
+	display: block;
+	width: 3rem;
 }

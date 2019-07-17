@@ -408,20 +408,20 @@
         },
         {
             "name": "phpgt/cookie",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhpGt/Cookie.git",
-                "reference": "365b528d2a988c68cbd78be7ecc2b0d9e5c62712"
+                "reference": "dd811b6f04becc7c1f8524d84ad02e4635f4a94e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhpGt/Cookie/zipball/365b528d2a988c68cbd78be7ecc2b0d9e5c62712",
-                "reference": "365b528d2a988c68cbd78be7ecc2b0d9e5c62712",
+                "url": "https://api.github.com/repos/PhpGt/Cookie/zipball/dd811b6f04becc7c1f8524d84ad02e4635f4a94e",
+                "reference": "dd811b6f04becc7c1f8524d84ad02e4635f4a94e",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2"
+                "php": ">=7.2"
             },
             "require-dev": {
                 "phpunit/phpunit": "8.*"
@@ -443,7 +443,7 @@
                 }
             ],
             "description": "Object oriented cookie handler.",
-            "time": "2019-04-08T12:24:52+00:00"
+            "time": "2019-07-17T20:11:11+00:00"
         },
         {
             "name": "phpgt/cron",
@@ -773,16 +773,16 @@
         },
         {
             "name": "phpgt/domtemplate",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhpGt/DomTemplate.git",
-                "reference": "40a3ec27580bd3d00a6bf5165bf7d4221d91e01d"
+                "reference": "0d4ce7de83df23f459b74d682bf9c7901ea7e50a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhpGt/DomTemplate/zipball/40a3ec27580bd3d00a6bf5165bf7d4221d91e01d",
-                "reference": "40a3ec27580bd3d00a6bf5165bf7d4221d91e01d",
+                "url": "https://api.github.com/repos/PhpGt/DomTemplate/zipball/0d4ce7de83df23f459b74d682bf9c7901ea7e50a",
+                "reference": "0d4ce7de83df23f459b74d682bf9c7901ea7e50a",
                 "shasum": ""
             },
             "require": {
@@ -803,7 +803,7 @@
                 "MIT"
             ],
             "description": "Bind dynamic data to reusable HTML components.",
-            "time": "2019-07-12T08:10:04+00:00"
+            "time": "2019-07-17T20:26:54+00:00"
         },
         {
             "name": "phpgt/fetch",
@@ -1037,17 +1037,62 @@
             "time": "2019-06-10T08:12:52+00:00"
         },
         {
+            "name": "phpgt/sync",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PhpGt/Sync.git",
+                "reference": "d789fe43805bae55fceeb2690deecb84a21aad39"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PhpGt/Sync/zipball/d789fe43805bae55fceeb2690deecb84a21aad39",
+                "reference": "d789fe43805bae55fceeb2690deecb84a21aad39",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2",
+                "phpgt/cli": "*",
+                "webmozart/glob": "4.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "8.*"
+            },
+            "bin": [
+                "bin/sync"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gt\\Sync\\": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Synchronise two directories.",
+            "keywords": [
+                "copy",
+                "file",
+                "files",
+                "filesystem",
+                "recursive",
+                "rsync",
+                "synchronise",
+                "synchronize"
+            ],
+            "time": "2019-07-17T21:08:19+00:00"
+        },
+        {
             "name": "phpgt/webengine",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhpGt/WebEngine.git",
-                "reference": "9da08976e1af0d2c40daebb4de7bbf10fd534f2a"
+                "reference": "bca1d67b448cf738161d6bc27a3c4b43f6e0ef6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhpGt/WebEngine/zipball/9da08976e1af0d2c40daebb4de7bbf10fd534f2a",
-                "reference": "9da08976e1af0d2c40daebb4de7bbf10fd534f2a",
+                "url": "https://api.github.com/repos/PhpGt/WebEngine/zipball/bca1d67b448cf738161d6bc27a3c4b43f6e0ef6b",
+                "reference": "bca1d67b448cf738161d6bc27a3c4b43f6e0ef6b",
                 "shasum": ""
             },
             "require": {
@@ -1069,6 +1114,7 @@
                 "phpgt/protectedglobal": "*",
                 "phpgt/server": "*",
                 "phpgt/session": "*",
+                "phpgt/sync": "*",
                 "psr/http-server-middleware": "^1.0",
                 "willdurand/negotiation": "^2.3"
             },
@@ -1101,7 +1147,7 @@
                 "webengine",
                 "webservice"
             ],
-            "time": "2019-07-15T14:52:08+00:00"
+            "time": "2019-07-17T21:15:57+00:00"
         },
         {
             "name": "psr/http-client",
