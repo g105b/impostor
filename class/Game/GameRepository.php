@@ -2,6 +2,7 @@
 namespace Imposter\Game;
 
 use Gt\Database\Query\QueryCollection;
+use Gt\Database\Result\Row;
 use Imposter\Auth\User;
 
 class GameRepository {
@@ -35,15 +36,7 @@ class GameRepository {
 
 	public function getById(int $id):Game {
 		$gameRow = $this->db->fetch("getById", $id);
-		return new Game(
-			$gameRow->id,
-			$gameRow->code,
-			$gameRow->scenario,
-			$gameRow->type,
-			$gameRow->limiter,
-			$gameRow->round,
-			$gameRow->started
-		);
+		return $this->gameFromRow($gameRow);
 	}
 
 	private function generateCode():string {
@@ -62,5 +55,27 @@ class GameRepository {
 		}
 
 		return $code;
+	}
+
+	public function getByCode(string $code):Game {
+		$gameRow = $this->db->fetch("getByCode", $code);
+
+		if(!$gameRow) {
+			throw new GameCodeNotFoundException($code);
+		}
+
+		return $this->gameFromRow($gameRow);
+	}
+
+	private function gameFromRow(Row $gameRow) {
+		return new Game(
+			$gameRow->id,
+			$gameRow->code,
+			$gameRow->scenario,
+			$gameRow->type,
+			$gameRow->limiter,
+			$gameRow->round,
+			$gameRow->started
+		);
 	}
 }

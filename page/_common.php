@@ -24,7 +24,7 @@ class _CommonPage extends Page {
 
 		$userRepo = new UserRepo(
 			$cookie,
-			$this->database->queryCollection("user")
+			$this->database->queryCollection("auth")
 		);
 		$userRepo->persist(
 			$this->session->getStore(
