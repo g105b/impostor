@@ -3,17 +3,13 @@ namespace Imposter\Page;
 
 use Gt\DomTemplate\Element;
 use Gt\Input\InputData\InputData;
-use Gt\WebEngine\FileSystem\Path;
 use Gt\WebEngine\Logic\Page;
 use Imposter\Auth\User;
+use Imposter\Auth\UserRepo;
 
 class SettingsPage extends Page {
-	/** @var User */
-	private $user;
-
-	public function before() {
-		$this->user = $this->session->get(User::SESSION_FULL_PATH);
-	}
+	/** @var UserRepo */
+	public $userRepo;
 
 	public function go() {
 		$this->fillForm(
@@ -22,30 +18,35 @@ class SettingsPage extends Page {
 	}
 
 	public function doSave(InputData $data) {
+		$user = $this->userRepo->load();
+
 		$this->database->update(
-			"user.updateNameForCookie",
+			"auth.updateNameForCookie",
 			$data->get("name"),
-			$this->user->getCookie()
+			$user->getCookie()
 		);
 
 		if($data->hasValue("picture")) {
 			$file = $data->getFile("picture");
-			$file->moveTo($this->user->getPicturePath());
+			$file->moveTo($user->getPicturePath());
 		}
 
+		$this->userRepo->load(true);
 		$this->reload();
 	}
 
 	private function fillForm(
 		Element $form
 	):void {
+		$user = $this->userRepo->load();
+
 		$form->bindKeyValue(
 			"name",
-			$this->user->getName()
+			$user->getName()
 		);
 		$form->bindKeyValue(
 			"user-picture-path",
-			$this->user->getWebPictureUri()
+			$user->getWebPictureUri()
 		);
 	}
 }

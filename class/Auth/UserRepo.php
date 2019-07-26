@@ -6,30 +6,57 @@ use Gt\Database\Query\QueryCollection;
 use Gt\Session\SessionStore;
 
 class UserRepo {
-	/** @var User */
-	private $user;
+	/** @var string */
+	private $cookie;
+	/** @var QueryCollection */
+	private $db;
+	/** @var SessionStore */
+	private $session;
 
 	public function __construct(
 		string $cookie,
-		QueryCollection $db
+		QueryCollection $db,
+		SessionStore $session
 	) {
+		$this->cookie = $cookie;
+		$this->db = $db;
+		$this->session = $session;
+	}
+
+	public function load(bool $forceDbUpdate = false):User {
+		/** @var User|null $user */
+		$user = $this->session->get(User::SESSION_KEY);
+
+		if($forceDbUpdate || !$user) {
+			$user = $this->loadFromDb();
+			$this->session->set(User::SESSION_KEY, $user);
+		}
+
+		return $user;
+	}
+
+	private function loadFromDb():User {
 		do {
-			$userRow = $db->fetch("getByCookie", $cookie);
+			$userRow = $this->db->fetch(
+				"getByCookie",
+				$this->cookie
+			);
 
 			if(!$userRow) {
-				$db->insert("createEmpty", $cookie);
+				$this->db->insert(
+					"createEmpty",
+					$this->cookie
+				);
 			}
 		}
 		while(!$userRow);
 
-		$this->user = new User(
+		$user = new User(
 			$userRow->id,
 			$userRow->cookie,
 			$userRow->name
 		);
-	}
 
-	public function persist(SessionStore $session):void {
-		$session->set(User::SESSION_KEY, $this->user);
+		return $user;
 	}
 }

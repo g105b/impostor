@@ -2,13 +2,13 @@
 namespace Imposter\Page;
 
 use DateTime;
-use Gt\WebEngine\Logic\Page;
+use Gt\WebEngine\Logic\CommonPage;
 use Imposter\Auth\CookieId;
 use Imposter\Auth\User;
 use Imposter\Auth\UserRepo;
 
-class _CommonPage extends Page {
-	public function go() {
+class _CommonPage extends CommonPage {
+	public function before() {
 		$this->user();
 	}
 
@@ -22,15 +22,13 @@ class _CommonPage extends Page {
 			new DateTime("+1 year")
 		);
 
-		$userRepo = new UserRepo(
+		$this->logicProperty->set("userRepo", new UserRepo(
 			$cookie,
-			$this->database->queryCollection("auth")
-		);
-		$userRepo->persist(
+			$this->database->queryCollection("auth"),
 			$this->session->getStore(
 				User::SESSION_NAMESPACE,
 				true
 			)
-		);
+		));
 	}
 }
