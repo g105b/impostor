@@ -9,12 +9,12 @@ use Imposter\Auth\UserRepository;
 use Imposter\Game\GameRepository;
 
 class _CommonPage extends CommonPage {
-	public function before() {
+	function before() {
 		$this->user();
 		$this->game();
 	}
 
-	private function user():void {
+	function user():void {
 		$cookie = $this->cookie->get(User::COOKIE_NAME)
 			?? new CookieId();
 		
@@ -34,7 +34,7 @@ class _CommonPage extends CommonPage {
 		));
 	}
 
-	private function game():void {
+	function game():void {
 		$this->logicProperty->set("gameRepo", new GameRepository(
 			$this->database->queryCollection("game")
 		));

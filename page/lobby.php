@@ -12,7 +12,7 @@ class LobbyPage extends Page {
 	/** @var UserRepository */
 	public $userRepo;
 
-	public function go() {
+	function go() {
 		$code = $this->input->get("code");
 		$this->document->bind("code", $code);
 
@@ -23,7 +23,7 @@ class LobbyPage extends Page {
 		);
 	}
 
-	private function outputPlayers(
+	function outputPlayers(
 		string $code,
 		Element $playerListElement,
 		Element $startFormElement

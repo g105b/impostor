@@ -44,6 +44,14 @@ class UserRepository {
 		return $user;
 	}
 
+	public function ensureUserHasName(string $uriToSetName):void {
+		$user = $this->load();
+		if(empty($user->getName())) {
+			header("Location: $uriToSetName");
+			exit;
+		}
+	}
+
 	private function loadFromDb():User {
 		do {
 			$userRow = $this->db->fetch(

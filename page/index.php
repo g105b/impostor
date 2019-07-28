@@ -11,24 +11,24 @@ class IndexPage extends Page {
 	/** @var GameRepository */
 	public $gameRepo;
 
-	public function go() {
+	function go() {
 		$this->displayCurrentGameInfo();
 	}
 
-	public function doJoin() {
+	function doJoin() {
 		$user = $this->userRepo->load();
 		$game = $this->gameRepo->getByUser($user);
 		$this->redirect($game->getLobbyUri());
 	}
 
-	public function doLeave() {
+	function doLeave() {
 		$user = $this->userRepo->load();
 		$game = $this->gameRepo->getByUser($user);
 		$this->gameRepo->leave($game, $user);
 		$this->reload();
 	}
 
-	private function displayCurrentGameInfo() {
+	function displayCurrentGameInfo() {
 		$user = $this->userRepo->load();
 		$game = $this->gameRepo->getByUser($user);
 

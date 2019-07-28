@@ -11,13 +11,15 @@ class SettingsPage extends Page {
 	/** @var UserRepository */
 	public $userRepo;
 
-	public function go() {
+	function go() {
 		$this->fillForm(
 			$this->document->querySelector("form")
 		);
+
+		$this->input->when("forced")->call([$this, "forcedMessage"]);
 	}
 
-	public function doSave(InputData $data) {
+	function doSave(InputData $data) {
 		$user = $this->userRepo->load();
 
 		$this->database->update(
@@ -35,7 +37,24 @@ class SettingsPage extends Page {
 		$this->reload();
 	}
 
-	private function fillForm(
+	function forcedMessage(InputData $data):void {
+		$forceType = $data->getString("forced");
+		$t = $this->document->getTemplate("forced-message");
+
+		switch($forceType) {
+		case "create":
+			$t->bind("action", "creating");
+			break;
+
+		case "join":
+			$t->bind("action", "joining");
+			break;
+		}
+
+		$t->insertTemplate();
+	}
+
+	function fillForm(
 		Element $form
 	):void {
 		$user = $this->userRepo->load();

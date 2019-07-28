@@ -13,11 +13,13 @@ class CreatePage extends Page {
 	/** @var GameRepository */
 	public $gameRepo;
 
-	public function go() {
-
+	function go() {
+		$this->userRepo->ensureUserHasName(
+			"/settings?forced=create"
+		);
 	}
 
-	public function doStart(InputData $data) {
+	function doStart(InputData $data) {
 		$user = $this->userRepo->load();
 
 		$game = $this->gameRepo->create(

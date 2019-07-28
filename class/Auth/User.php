@@ -83,4 +83,8 @@ class User implements BindDataGetter {
 		$endOfCookie = substr($cookie, -6);
 		return $idPadded . $endOfCookie;
 	}
+
+	public function hasName():bool {
+		return !empty($this->getName());
+	}
 }

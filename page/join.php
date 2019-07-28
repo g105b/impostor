@@ -13,7 +13,13 @@ class JoinPage extends Page {
 	/** @var UserRepository */
 	public $userRepo;
 
-	public function doJoin(InputData $data) {
+	function go() {
+		$this->userRepo->ensureUserHasName(
+			"/settings?forced=join"
+		);
+	}
+
+	function doJoin(InputData $data) {
 		$code = $data->getString("code");
 
 		try {

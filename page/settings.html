@@ -1,6 +1,10 @@
 <form method="post" enctype="multipart/form-data">
 	<h1>Settings</h1>
 
+	<div data-template="forced-message">
+		<p>You must at least set your name before <span data-bind:text="action">actioning</span> a game.</p>
+	</div>
+
 	<label>
 		<span>What is your name?</span>
 		<input name="name" required data-bind:value="name" />
