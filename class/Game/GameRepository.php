@@ -95,6 +95,10 @@ class GameRepository {
 		]);
 	}
 
+	public function leave(Game $game, User $user):void {
+		$this->db->delete("leave", $user->getId());
+	}
+
 	/**
 	 * Loads the game that the provided user is currently in, or null if
 	 * the user isn't in a game.

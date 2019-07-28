@@ -15,6 +15,19 @@ class IndexPage extends Page {
 		$this->displayCurrentGameInfo();
 	}
 
+	public function doJoin() {
+		$user = $this->userRepo->load();
+		$game = $this->gameRepo->getByUser($user);
+		$this->redirect($game->getLobbyUri());
+	}
+
+	public function doLeave() {
+		$user = $this->userRepo->load();
+		$game = $this->gameRepo->getByUser($user);
+		$this->gameRepo->leave($game, $user);
+		$this->reload();
+	}
+
 	private function displayCurrentGameInfo() {
 		$user = $this->userRepo->load();
 		$game = $this->gameRepo->getByUser($user);

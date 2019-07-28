@@ -63,4 +63,8 @@ class Game {
 	public function isStarted():bool {
 		return (bool)$this->started;
 	}
+
+	public function getLobbyUri():string {
+		return "/lobby?code=" . $this->getCode();
+	}
 }

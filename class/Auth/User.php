@@ -25,7 +25,7 @@ class User implements BindDataGetter {
 	public function __construct(
 		int $id,
 		string $cookie,
-		string $name = null
+		?string $name
 	) {
 		$this->id = $id;
 		$this->pubId = $this->generatePubId($id, $cookie);

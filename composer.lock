@@ -1087,12 +1087,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhpGt/WebEngine.git",
-                "reference": "bca1d67b448cf738161d6bc27a3c4b43f6e0ef6b"
+                "reference": "2c6b3c530922c36c00b944f7245108f7cdfc4e71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhpGt/WebEngine/zipball/bca1d67b448cf738161d6bc27a3c4b43f6e0ef6b",
-                "reference": "bca1d67b448cf738161d6bc27a3c4b43f6e0ef6b",
+                "url": "https://api.github.com/repos/PhpGt/WebEngine/zipball/2c6b3c530922c36c00b944f7245108f7cdfc4e71",
+                "reference": "2c6b3c530922c36c00b944f7245108f7cdfc4e71",
                 "shasum": ""
             },
             "require": {
@@ -1147,7 +1147,7 @@
                 "webengine",
                 "webservice"
             ],
-            "time": "2019-07-17T21:15:57+00:00"
+            "time": "2019-07-25T19:40:05+00:00"
         },
         {
             "name": "psr/http-client",

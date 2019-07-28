@@ -11,7 +11,7 @@ class Player extends User {
 	public function __construct(
 		int $id,
 		string $cookie,
-		string $name,
+		?string $name,
 		DateTime $joined
 	) {
 		parent::__construct($id, $cookie, $name);
