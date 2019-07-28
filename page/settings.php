@@ -5,10 +5,10 @@ use Gt\DomTemplate\Element;
 use Gt\Input\InputData\InputData;
 use Gt\WebEngine\Logic\Page;
 use Imposter\Auth\User;
-use Imposter\Auth\UserRepo;
+use Imposter\Auth\UserRepository;
 
 class SettingsPage extends Page {
-	/** @var UserRepo */
+	/** @var UserRepository */
 	public $userRepo;
 
 	public function go() {

@@ -3,23 +3,24 @@ namespace Imposter\Page;
 
 use Gt\Input\InputData\InputData;
 use Gt\WebEngine\Logic\Page;
+use Imposter\Auth\UserRepository;
 use Imposter\Game\GameCodeNotFoundException;
 use Imposter\Game\GameRepository;
 
 class JoinPage extends Page {
-	public function go() {
-
-	}
+	/** @var GameRepository */
+	public $gameRepo;
+	/** @var UserRepository */
+	public $userRepo;
 
 	public function doJoin(InputData $data) {
 		$code = $data->getString("code");
 
-		$gameRepo = new GameRepository(
-			$this->database->queryCollection("game")
-		);
-
 		try {
-			$gameRepo->getByCode($code);
+			$game = $this->gameRepo->getByCode($code);
+			$user = $this->userRepo->load();
+			$this->gameRepo->join($game, $user);
+			$this->redirect("/lobby?code=" . $game->getCode());
 		}
 		catch(GameCodeNotFoundException $exception) {
 			$error = $this->document->getTemplate(

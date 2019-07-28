@@ -1,6 +1,11 @@
 <h1>Imposter!</h1>
 
 <nav>
+	<form method="post" class="in-game" data-template="in-game">
+		<p>You are currently in the game <span data-bind:text="code">XXXXXX</span>.</p>
+		<button name="do" value="join">Join</button>
+		<button name="do" value="leave">Leave</button>
+	</form>
 	<ul>
 		<li>
 			<a href="/join">Join game</a>

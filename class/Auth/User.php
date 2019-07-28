@@ -1,9 +1,10 @@
 <?php
 namespace Imposter\Auth;
 
+use Gt\DomTemplate\BindDataGetter;
 use Gt\WebEngine\FileSystem\Path;
 
-class User {
+class User implements BindDataGetter {
 	const SESSION_NAMESPACE = "auth";
 	const SESSION_KEY = "user";
 	const SESSION_FULL_PATH =
@@ -65,12 +66,16 @@ class User {
 			mkdir(dirname($wwwPath), 0775, true);
 		}
 
-		if(!is_file($wwwPath)
-		|| filemtime($dataPath) > filemtime($wwwPath)) {
-			copy($dataPath, $wwwPath);
+		if(is_file($dataPath)) {
+			if(!is_file($wwwPath)
+				|| filemtime($dataPath) > filemtime($wwwPath)) {
+				copy($dataPath, $wwwPath);
+			}
+
+			return "/user-picture/{$this->pubId}.jpg";
 		}
 
-		return "/user-picture/{$this->pubId}.jpg";
+		return "/asset/img/default.svg";
 	}
 
 	private function generatePubId(int $id, string $cookie):string {

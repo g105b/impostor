@@ -1,13 +1,15 @@
 <h1>Imposter!</h1>
-<h2>Waiting for players...</h2>
+<h2>Game code: <strong data-bind:text="code">000000</strong></h2>
+<h3>Waiting for players...</h3>
 
 <ul class="player-list">
-	<li>
-		<img class="userpic" src="/asset/img/default.svg" alt="{}'s player picture" />
+	<li data-template>
+		<img class="userpic" src="/asset/img/default.svg" alt="{name}'s player picture" data-bind:src="webPictureUri" />
 		<span data-bind:text="name">Player name</span>
 	</li>
 </ul>
 
-<form method="post">
-	<button name="do" value="start">Start!</button>
+<form method="post" class="start-form">
+	<button name="do" value="start" disabled>Start!</button>
+	<p data-template="not-enough-players">Game can be started when three or more players are ready.</p>
 </form>

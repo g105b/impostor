@@ -5,11 +5,13 @@ use DateTime;
 use Gt\WebEngine\Logic\CommonPage;
 use Imposter\Auth\CookieId;
 use Imposter\Auth\User;
-use Imposter\Auth\UserRepo;
+use Imposter\Auth\UserRepository;
+use Imposter\Game\GameRepository;
 
 class _CommonPage extends CommonPage {
 	public function before() {
 		$this->user();
+		$this->game();
 	}
 
 	private function user():void {
@@ -22,13 +24,19 @@ class _CommonPage extends CommonPage {
 			new DateTime("+1 year")
 		);
 
-		$this->logicProperty->set("userRepo", new UserRepo(
+		$this->logicProperty->set("userRepo", new UserRepository(
 			$cookie,
 			$this->database->queryCollection("auth"),
 			$this->session->getStore(
 				User::SESSION_NAMESPACE,
 				true
 			)
+		));
+	}
+
+	private function game():void {
+		$this->logicProperty->set("gameRepo", new GameRepository(
+			$this->database->queryCollection("game")
 		));
 	}
 }

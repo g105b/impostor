@@ -1,6 +1,7 @@
 <?php
 namespace Imposter\Game;
 
+use DateTime;
 use Gt\Database\Query\QueryCollection;
 use Gt\Database\Result\Row;
 use Imposter\Auth\User;
@@ -67,6 +68,46 @@ class GameRepository {
 		return $this->gameFromRow($gameRow);
 	}
 
+	/**
+	 * @return Player[]
+	 */
+	public function getPlayerList(string $code):array {
+		$playerList = [];
+
+		$game = $this->getByCode($code);
+		foreach($this->db->fetchAll("getPlayers", $game->getId())
+		as $row) {
+			$playerList []= new Player(
+				$row->userId,
+				$row->cookie,
+				$row->name,
+				new DateTime($row->joined)
+			);
+		}
+
+		return $playerList;
+	}
+
+	public function join(Game $game, User $user):void {
+		$this->db->insert("join", [
+			"gameId" => $game->getId(),
+			"userId" => $user->getId(),
+		]);
+	}
+
+	/**
+	 * Loads the game that the provided user is currently in, or null if
+	 * the user isn't in a game.
+	 */
+	public function getByUser(User $user):?Game {
+		$row = $this->db->fetch("getByPlayerId", $user->getId());
+		if(is_null($row)) {
+			return null;
+		}
+
+		return $this->gameFromRow($row);
+	}
+
 	private function gameFromRow(Row $gameRow) {
 		return new Game(
 			$gameRow->id,
@@ -75,6 +116,7 @@ class GameRepository {
 			$gameRow->type,
 			$gameRow->limiter,
 			$gameRow->round,
+			$gameRow->creator,
 			$gameRow->started
 		);
 	}

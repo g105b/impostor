@@ -1,11 +1,11 @@
 <?php
 namespace Imposter\Auth;
 
-use Gt\Cookie\CookieHandler;
 use Gt\Database\Query\QueryCollection;
+use Gt\Database\Result\Row;
 use Gt\Session\SessionStore;
 
-class UserRepo {
+class UserRepository {
 	/** @var string */
 	private $cookie;
 	/** @var QueryCollection */
@@ -21,6 +21,15 @@ class UserRepo {
 		$this->cookie = $cookie;
 		$this->db = $db;
 		$this->session = $session;
+	}
+
+	public function getById(int $id):?User {
+		$userRow = $this->db->fetch("getById", $id);
+		if(is_null($userRow)) {
+			return null;
+		}
+
+		return $this->userFromRow($userRow);
 	}
 
 	public function load(bool $forceDbUpdate = false):User {
@@ -51,12 +60,14 @@ class UserRepo {
 		}
 		while(!$userRow);
 
-		$user = new User(
+		return $this->userFromRow($userRow);
+	}
+
+	private function userFromRow(Row $userRow):User {
+		return new User(
 			$userRow->id,
 			$userRow->cookie,
 			$userRow->name
 		);
-
-		return $user;
 	}
 }
