@@ -34,6 +34,17 @@ class SettingsPage extends Page {
 		}
 
 		$this->userRepo->load(true);
+
+		if($this->input->contains("forced")) {
+			$forced = $this->input->getString("forced");
+			switch($forced) {
+			case "create":
+			case "join":
+				$this->redirect("/" . $forced);
+				break;
+			}
+		}
+
 		$this->reload();
 	}
 
