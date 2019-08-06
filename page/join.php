@@ -1,11 +1,11 @@
 <?php
-namespace Imposter\Page;
+namespace Impostor\Page;
 
 use Gt\Input\InputData\InputData;
 use Gt\WebEngine\Logic\Page;
-use Imposter\Auth\UserRepository;
-use Imposter\Game\GameCodeNotFoundException;
-use Imposter\Game\GameRepository;
+use Impostor\Auth\UserRepository;
+use Impostor\Game\GameCodeNotFoundException;
+use Impostor\Game\GameRepository;
 
 class JoinPage extends Page {
 	/** @var GameRepository */

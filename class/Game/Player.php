@@ -1,8 +1,8 @@
 <?php
-namespace Imposter\Game;
+namespace Impostor\Game;
 
 use DateTime;
-use Imposter\Auth\User;
+use Impostor\Auth\User;
 
 class Player extends User {
 	/** @var DateTime */

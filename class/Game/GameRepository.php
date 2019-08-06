@@ -1,10 +1,10 @@
 <?php
-namespace Imposter\Game;
+namespace Impostor\Game;
 
 use DateTime;
 use Gt\Database\Query\QueryCollection;
 use Gt\Database\Result\Row;
-use Imposter\Auth\User;
+use Impostor\Auth\User;
 
 class GameRepository {
 	/** @var QueryCollection */
@@ -89,13 +89,47 @@ class GameRepository {
 	}
 
 	public function join(Game $game, User $user):void {
+		$this->leave($user);
 		$this->db->insert("join", [
 			"gameId" => $game->getId(),
 			"userId" => $user->getId(),
 		]);
 	}
 
-	public function leave(Game $game, User $user):void {
+	/**
+	 * Sets the game to started. Note that only the creator can start the
+	 * game. Anyone else bypassing the disabled start button will not
+	 * succeed.
+	 */
+	public function start(Game $game, User $user):void {
+		$guesses = $this->getGuesses($game, 10);
+		foreach($guesses as $guess) {
+			$this->db->insert(
+				"addGuessToGame",
+				$guess->getId(),
+				$game->getId()
+			);
+		}
+
+		$correctGuess = $guesses[array_rand($guesses)];
+		$this->db->update(
+			"setCorrectGuessForGame",
+			$correctGuess->getId(),
+			$game->getId()
+		);
+
+		$playerList = $this->getPlayerList($game->getCode());
+		$impostor = $playerList[array_rand($playerList)];
+		$this->db->update(
+			"setImpostorForGame",
+			$impostor->getId(),
+			$game->getId()
+		);
+
+		$this->db->update("start", $game->getId(), $user->getId());
+	}
+
+	public function leave(User $user):void {
 		$this->db->delete("leave", $user->getId());
 	}
 
@@ -112,7 +146,26 @@ class GameRepository {
 		return $this->gameFromRow($row);
 	}
 
+	/** @return Scenario[] */
+	public function getScenarios():array {
+		$scenarioList = [];
+
+		foreach($this->db->fetchAll("getAllScenarios") as $row) {
+			$scenarioList []= new Scenario(
+				$row->id,
+				$row->title
+			);
+		}
+
+		return $scenarioList;
+	}
+
 	private function gameFromRow(Row $gameRow) {
+		$started = null;
+		if($gameRow->started) {
+			$started = new DateTime($gameRow->started);
+		}
+
 		return new Game(
 			$gameRow->id,
 			$gameRow->code,
@@ -121,7 +174,32 @@ class GameRepository {
 			$gameRow->limiter,
 			$gameRow->round,
 			$gameRow->creator,
-			$gameRow->started
+			$started
 		);
+	}
+
+	/** @return Guess[] */
+	private function getGuesses(Game $game, int $numberOfGuesses):array {
+		$guessList = [];
+
+		$resultSet = $this->db->fetchAll(
+			"getGuessesForScenario",
+			$game->getScenarioId()
+		);
+
+		foreach($resultSet as $row) {
+			if(count($guessList) >= $numberOfGuesses) {
+				break;
+			}
+
+			$guessList []= new Guess(
+				$row->id,
+				$row->title,
+				$row->description
+			);
+		}
+
+		shuffle($guessList);
+		return $guessList;
 	}
 }

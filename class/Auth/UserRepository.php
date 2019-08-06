@@ -1,5 +1,5 @@
 <?php
-namespace Imposter\Auth;
+namespace Impostor\Auth;
 
 use Gt\Database\Query\QueryCollection;
 use Gt\Database\Result\Row;

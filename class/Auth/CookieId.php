@@ -1,5 +1,5 @@
 <?php
-namespace Imposter\Auth;
+namespace Impostor\Auth;
 
 class CookieId {
 	/** @var string */

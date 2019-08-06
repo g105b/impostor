@@ -1,6 +1,6 @@
 <?php
-namespace Imposter;
+namespace Impostor;
 
 use RuntimeException;
 
-class ImposterException extends RuntimeException {}
+class ImpostorException extends RuntimeException {}

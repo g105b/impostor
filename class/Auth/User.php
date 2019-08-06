@@ -1,5 +1,5 @@
 <?php
-namespace Imposter\Auth;
+namespace Impostor\Auth;
 
 use Gt\DomTemplate\BindDataGetter;
 use Gt\WebEngine\FileSystem\Path;

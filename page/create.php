@@ -1,11 +1,12 @@
 <?php
-namespace Imposter\Page;
+namespace Impostor\Page;
 
+use Gt\DomTemplate\Element;
 use Gt\Input\InputData\InputData;
 use Gt\WebEngine\Logic\Page;
-use Imposter\Auth\User;
-use Imposter\Auth\UserRepository;
-use Imposter\Game\GameRepository;
+use Impostor\Auth\User;
+use Impostor\Auth\UserRepository;
+use Impostor\Game\GameRepository;
 
 class CreatePage extends Page {
 	/** @var UserRepository */
@@ -16,6 +17,9 @@ class CreatePage extends Page {
 	function go() {
 		$this->userRepo->ensureUserHasName(
 			"/settings?forced=create"
+		);
+		$this->outputScenarios(
+			$this->document->querySelector("[name=scenario]")
 		);
 	}
 
@@ -31,5 +35,11 @@ class CreatePage extends Page {
 		);
 		$this->gameRepo->join($game, $user);
 		$this->redirect("/lobby?code=" . $game->getCode());
+	}
+
+	function outputScenarios(Element $element) {
+		$element->bindList(
+			$this->gameRepo->getScenarios()
+		);
 	}
 }

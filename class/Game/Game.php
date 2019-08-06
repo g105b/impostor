@@ -1,9 +1,9 @@
 <?php
-namespace Imposter\Game;
+namespace Impostor\Game;
 
 use DateTime;
-use Imposter\Auth\User;
-use Imposter\Auth\UserRepository;
+use Impostor\Auth\User;
+use Impostor\Auth\UserRepository;
 
 class Game {
 	const CODE_LENGTH = 7;
@@ -11,8 +11,8 @@ class Game {
 	private $id;
 	/** @var string */
 	private $code;
-	/** @var string */
-	private $scenario;
+	/** @var int */
+	private $scenarioId;
 	/** @var string */
 	private $type;
 	/** @var int */
@@ -27,7 +27,7 @@ class Game {
 	public function __construct(
 		int $id,
 		string $code,
-		string $scenario,
+		int $scenarioId,
 		string $type,
 		int $limiter,
 		string $round,
@@ -36,7 +36,7 @@ class Game {
 	) {
 		$this->id = $id;
 		$this->code = $code;
-		$this->scenario = $scenario;
+		$this->scenarioId = $scenarioId;
 		$this->type = $type;
 		$this->limiter = $limiter;
 		$this->round = $round;
@@ -66,5 +66,9 @@ class Game {
 
 	public function getLobbyUri():string {
 		return "/lobby?code=" . $this->getCode();
+	}
+
+	public function getScenarioId():int {
+		return $this->scenarioId;
 	}
 }

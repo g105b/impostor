@@ -1,15 +1,15 @@
 <?php
-namespace Imposter\Page;
+namespace Impostor\Page;
 
 use DateTime;
-use Gt\WebEngine\Logic\CommonPage;
-use Imposter\Auth\CookieId;
-use Imposter\Auth\User;
-use Imposter\Auth\UserRepository;
-use Imposter\Game\GameRepository;
+use Gt\WebEngine\Logic\PageSetup;
+use Impostor\Auth\CookieId;
+use Impostor\Auth\User;
+use Impostor\Auth\UserRepository;
+use Impostor\Game\GameRepository;
 
-class _CommonPage extends CommonPage {
-	function before() {
+class _SetupPage extends PageSetup {
+	function go() {
 		$this->user();
 		$this->game();
 	}

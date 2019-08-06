@@ -1,11 +1,11 @@
 <?php
-namespace Imposter\Page;
+namespace Impostor\Page;
 
 use Gt\DomTemplate\Element;
 use Gt\Input\InputData\InputData;
 use Gt\WebEngine\Logic\Page;
-use Imposter\Auth\User;
-use Imposter\Auth\UserRepository;
+use Impostor\Auth\User;
+use Impostor\Auth\UserRepository;
 
 class SettingsPage extends Page {
 	/** @var UserRepository */

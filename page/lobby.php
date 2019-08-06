@@ -1,10 +1,10 @@
 <?php
-namespace Imposter\Page;
+namespace Impostor\Page;
 
 use Gt\DomTemplate\Element;
 use Gt\WebEngine\Logic\Page;
-use Imposter\Auth\UserRepository;
-use Imposter\Game\GameRepository;
+use Impostor\Auth\UserRepository;
+use Impostor\Game\GameRepository;
 
 class LobbyPage extends Page {
 	/** @var GameRepository */
@@ -14,6 +14,7 @@ class LobbyPage extends Page {
 
 	function go() {
 		$code = $this->input->get("code");
+		$this->checkStarted($code);
 		$this->document->bind("code", $code);
 
 		$this->outputPlayers(
@@ -23,11 +24,18 @@ class LobbyPage extends Page {
 		);
 	}
 
+	function doStart() {
+		$user = $this->userRepo->load();
+		$game = $this->gameRepo->getByUser($user);
+		$this->gameRepo->start($game, $user);
+		$this->reload();
+	}
+
 	function outputPlayers(
 		string $code,
 		Element $playerListElement,
 		Element $startFormElement
-	) {
+	):void {
 		$user = $this->userRepo->load();
 		$game = $this->gameRepo->getByCode($code);
 		$playerList = $this->gameRepo->getPlayerList($code);
@@ -46,6 +54,13 @@ class LobbyPage extends Page {
 		}
 		else {
 			$this->document->getTemplate("not-enough-players")->insertTemplate();
+		}
+	}
+
+	function checkStarted(string $code):void {
+		$game = $this->gameRepo->getByCode($code);
+		if($game->isStarted()) {
+			$this->redirect("/game");
 		}
 	}
 }

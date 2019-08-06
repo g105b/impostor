@@ -1,6 +1,6 @@
 <?php
-namespace Imposter\Game;
+namespace Impostor\Game;
 
-use Imposter\ImposterException;
+use Impostor\ImpostorException;
 
-class GameCodeNotFoundException extends ImposterException {}
+class GameCodeNotFoundException extends ImpostorException {}
