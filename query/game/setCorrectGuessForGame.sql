@@ -5,8 +5,8 @@ set
 	correct = true
 
 where
-	guess = ?
+	guessId = ?
 and
-	game = ?
+	gameId = ?
 
 limit 1

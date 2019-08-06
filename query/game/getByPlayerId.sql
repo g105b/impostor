@@ -1,11 +1,11 @@
 select
-	id,
+	game.id,
 	code,
 	created,
 	completed,
 	started,
-	creator,
-	scenario,
+	userCreatorId,
+	scenarioId,
 	type,
 	limiter,
 	round

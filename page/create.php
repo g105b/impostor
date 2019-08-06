@@ -28,10 +28,10 @@ class CreatePage extends Page {
 
 		$game = $this->gameRepo->create(
 			$user,
-			$data->get("scenario"),
-			$data->get("type"),
+			$data->getInt("scenario"),
+			$data->getString("type"),
 			$data->getInt("limiter"),
-			$data->get("round")
+			$data->getString("round")
 		);
 		$this->gameRepo->join($game, $user);
 		$this->redirect("/lobby?code=" . $game->getCode());
@@ -39,7 +39,7 @@ class CreatePage extends Page {
 
 	function outputScenarios(Element $element) {
 		$element->bindList(
-			$this->gameRepo->getScenarios()
+			$this->gameRepo->getScenarioList()
 		);
 	}
 }

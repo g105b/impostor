@@ -16,7 +16,7 @@ class GameRepository {
 
 	public function create(
 		User $user,
-		string $scenario,
+		int $scenarioId,
 		string $type,
 		int $limiter,
 		string $round
@@ -25,8 +25,8 @@ class GameRepository {
 
 		$gameId = $this->db->insert("create", [
 			"code" => $code,
-        		"userCreatorId" => $user->getId(),
-        		"scenario" => $scenario,
+        		"userId" => $user->getId(),
+        		"scenarioId" => $scenarioId,
         		"type" => $type,
         		"limiter" => $limiter,
         		"round" => $round,
@@ -119,12 +119,32 @@ class GameRepository {
 		);
 
 		$playerList = $this->getPlayerList($game->getCode());
+		$personaList = $this->getPersonaList($correctGuess);
+
 		$impostor = $playerList[array_rand($playerList)];
 		$this->db->update(
 			"setImpostorForGame",
 			$impostor->getId(),
 			$game->getId()
 		);
+
+		foreach($playerList as $player) {
+			if($player === $impostor) {
+				continue;
+			}
+
+			do {
+				$persona = $personaList[array_rand($personaList)];
+			}
+			while(!$persona->hasAllowance());
+
+			$this->db->insert(
+				"setPersonaForPlayer",
+				$persona->getId(),
+				$player->getId()
+			);
+			$persona->allocate();
+		}
 
 		$this->db->update("start", $game->getId(), $user->getId());
 	}
@@ -147,7 +167,7 @@ class GameRepository {
 	}
 
 	/** @return Scenario[] */
-	public function getScenarios():array {
+	public function getScenarioList():array {
 		$scenarioList = [];
 
 		foreach($this->db->fetchAll("getAllScenarios") as $row) {
@@ -160,6 +180,23 @@ class GameRepository {
 		return $scenarioList;
 	}
 
+	/** @return Persona[] */
+	private function getPersonaList(Guess $guess):array {
+		$personaList = [];
+
+		foreach($this->db->fetchAll("getPersonasForGuess", $guess->getId())
+		as $row) {
+			$personaList [] = new Persona(
+				$row->id,
+				$row->max,
+				$row->title,
+				$row->description
+			);
+		}
+
+		return $personaList;
+	}
+
 	private function gameFromRow(Row $gameRow) {
 		$started = null;
 		if($gameRow->started) {
@@ -169,11 +206,11 @@ class GameRepository {
 		return new Game(
 			$gameRow->id,
 			$gameRow->code,
-			$gameRow->scenario,
+			$gameRow->scenarioId,
 			$gameRow->type,
 			$gameRow->limiter,
 			$gameRow->round,
-			$gameRow->creator,
+			$gameRow->userCreatorId,
 			$started
 		);
 	}

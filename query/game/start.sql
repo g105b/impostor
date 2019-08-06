@@ -8,6 +8,6 @@ where
 	game.id = ?
 
 and
-        game.creator = ?
+        game.userCreatorId = ?
 
 limit 1

@@ -1,6 +1,6 @@
 select
 	id,
-	scenario,
+	scenarioId,
 	title,
 	description
 
@@ -8,4 +8,4 @@ from
 	scenario_guess
 
 where
-	scenario = ?
+	scenarioId = ?

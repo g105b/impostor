@@ -1,8 +1,4 @@
-insert into game_has_guess (
-	guess,
-	game
-)
-values (
-	?,
-	?
-)
+insert into game_has_guess
+set
+	guessId = ?,
+	gameId = ?

@@ -4,8 +4,8 @@ create table game(
         created datetime not null,
         started datetime,
         completed datetime,
-        creator int not null,
-        scenario varchar(32) not null,
+        userCreatorId int not null,
+        scenarioId int not null,
         type varchar(32) not null,
         limiter int not null,
         round varchar(32) not null

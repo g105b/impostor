@@ -1,5 +1,5 @@
 select
-	userId,
+	user.id as userId,
         user.name,
         user.cookie,
         joined

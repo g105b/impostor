@@ -1,10 +1,5 @@
-replace into player (
-        userId,
-        gameId,
-        joined
-)
-values (
-        :userId,
-        :gameId,
-        now()
-)
+insert into player
+set
+	userId = :userId,
+	gameId = :gameId,
+	joined = now()

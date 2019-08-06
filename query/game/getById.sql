@@ -4,8 +4,8 @@ select
 	created,
 	completed,
         started,
-	creator,
-	scenario,
+	userCreatorId,
+	scenarioId,
 	type,
 	limiter,
 	round
