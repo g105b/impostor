@@ -1,6 +1,7 @@
 <?php
 namespace Impostor\Page;
 
+use Gt\DomTemplate\Element;
 use Gt\WebEngine\Logic\Page;
 use Impostor\Auth\UserRepository;
 use Impostor\Game\GameRepository;
@@ -13,12 +14,9 @@ class GamePage extends Page {
 
 	function go() {
 		$this->checkGameStarted();
-
-		$this->document->querySelector(".c-game-guesses ul")->bindList([
-			["guess" => "one"],
-			["guess" => "two"],
-			["guess" => "three"],
-		]);
+		$this->outputGuesses(
+			$this->document->querySelector(".c-game-guesses ul")
+		);
 	}
 
 	function checkGameStarted():void {
@@ -32,5 +30,10 @@ class GamePage extends Page {
 		if(!$game->isStarted()) {
 			$this->redirect($game->getLobbyUri());
 		}
+	}
+
+	function outputGuesses(Element $guessList) {
+		$game = $this->gameRepo->getByUser($this->userRepo->load());
+		$this->gameRepo->getGuessList($game);
 	}
 }

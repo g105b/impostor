@@ -102,7 +102,7 @@ class GameRepository {
 	 * succeed.
 	 */
 	public function start(Game $game, User $user):void {
-		$guesses = $this->getGuesses($game, 10);
+		$guesses = $this->pickGuesses($game, 10);
 		foreach($guesses as $guess) {
 			$this->db->insert(
 				"addGuessToGame",
@@ -166,6 +166,22 @@ class GameRepository {
 		return $this->gameFromRow($row);
 	}
 
+	/** @return Guess[] */
+	public function getGuessList(Game $game):array {
+		$guessList = [];
+
+		foreach($this->db->fetchAll("getGuessesForGame", $game->getId())
+		as $row) {
+			$guessList []= new Guess(
+				$row->id,
+				$row->title,
+				$row->description
+			);
+		}
+
+		return $guessList;
+	}
+
 	/** @return Scenario[] */
 	public function getScenarioList():array {
 		$scenarioList = [];
@@ -216,7 +232,7 @@ class GameRepository {
 	}
 
 	/** @return Guess[] */
-	private function getGuesses(Game $game, int $numberOfGuesses):array {
+	private function pickGuesses(Game $game, int $numberOfGuesses):array {
 		$guessList = [];
 
 		$resultSet = $this->db->fetchAll(
