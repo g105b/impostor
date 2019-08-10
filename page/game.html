@@ -1,7 +1,67 @@
-<form method="post" class="c-game-guesses">
-	<ul>
-		<li data-template>
-			<span data-bind:text="guess">Name of guess</span>
-		</li>
-	</ul>
-</form>
+<div class="c-helper-buttons">
+	<div class="identify">
+		<label>
+<!--			<input type="checkbox" />-->
+			<span>Identify!</span>
+
+			<div>
+				<div data-template="player-description">
+					<h1 data-bind:text="guess-title">Correct guess title</h1>
+					<h2>Your role is: <span data-bind:text="role">role name</span>.</h2>
+					<p data-bind:text="persona-description">This persona does not have a description.</p>
+				</div>
+				<div data-template="impostor-description">
+					<h1>You are the impostor!</h1>
+					<p>To win, you need to act confidently, playing along with the others' questions in order to identify which guess is correct, but without blowing your cover. Once you are certain, end the game by pressing the guess you are sure is correct.</p>
+				</div>
+			</div>
+		</label>
+	</div>
+</div>
+
+<main>
+	<div class="c-game-guesses list-box">
+		<ul>
+			<li data-template>
+				<input id="guess-{id}" type="checkbox" data-bind-parameters />
+				<label class="toggle" for="guess-{id}" data-bind:text="title" data-bind-parameters>Name of guess</label>
+
+				<form method="post" class="overlay">
+					<input type="hidden" name="id" data-bind:value="id" />
+
+					<h1 data-bind:text="title">Name of guess</h1>
+					<div class="description"></div>
+
+					<div class="actions">
+						<button name="do" value="guess">Guess this location!</button>
+						<label for="guess-{id}" data-bind-parameters>Close</label>
+					</div>
+				</form>
+			</li>
+		</ul>
+	</div>
+
+	<div class="c-game-players list-box">
+		<ul>
+			<li data-template>
+				<input id="player-{id}" type="checkbox" data-bind-parameters />
+				<label class="toggle" for="player-{id}" data-bind:text="name" data-bind-parameters>Player name</label>
+
+				<form method="post" class="overlay">
+					<h1 data-bind:text="name">Player name</h1>
+
+					<img src="/asset/img/default.svg" data-bind:src="webPictureUri" />
+
+					<div class="actions">
+						<button name="do" value="guessImpostor">Accuse as Impostor!</button>
+						<label for="player-{id}" data-bind-parameters>Close</label>
+					</div>
+				</form>
+			</li>
+		</ul>
+	</div>
+
+	<form class="c-game-status">
+
+	</form>
+</main>

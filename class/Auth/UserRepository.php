@@ -1,9 +1,12 @@
 <?php
 namespace Impostor\Auth;
 
+use DateTime;
 use Gt\Database\Query\QueryCollection;
 use Gt\Database\Result\Row;
 use Gt\Session\SessionStore;
+use Impostor\Game\Persona;
+use Impostor\Game\Player;
 
 class UserRepository {
 	/** @var string */
@@ -42,6 +45,35 @@ class UserRepository {
 		}
 
 		return $user;
+	}
+
+	public function getPlayer(User $user):?Player {
+		$row = $this->db->fetch(
+			"getPlayerByUserId",
+			$user->getId()
+		);
+
+		if(is_null($row)) {
+			return null;
+		}
+
+		$persona = null;
+
+		if(!is_null($row->personaId)) {
+			$persona = new Persona(
+				$row->personaId,
+				$row->personaTitle,
+				$row->personaDescription
+			);
+		}
+
+		return new Player(
+			$row->id,
+			$row->cookie,
+			$persona,
+			$row->name,
+			new DateTime($row->joined)
+		);
 	}
 
 	public function ensureUserHasName(string $uriToSetName):void {

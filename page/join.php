@@ -6,6 +6,7 @@ use Gt\WebEngine\Logic\Page;
 use Impostor\Auth\UserRepository;
 use Impostor\Game\GameCodeNotFoundException;
 use Impostor\Game\GameRepository;
+use Impostor\Game\JoiningGameAlreadyStartedException;
 
 class JoinPage extends Page {
 	/** @var GameRepository */
@@ -32,7 +33,12 @@ class JoinPage extends Page {
 			$error = $this->document->getTemplate(
 				"error-no-game-code"
 			)->insertTemplate();
-
+			$error->bind("code", $code);
+		}
+		catch(JoiningGameAlreadyStartedException $exception) {
+			$error = $this->document->getTemplate(
+				"error-already-started"
+			)->insertTemplate();
 			$error->bind("code", $code);
 		}
 	}

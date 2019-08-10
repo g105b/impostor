@@ -11,9 +11,9 @@ class Persona {
 
 	public function __construct(
 		int $id,
-		?int $max,
 		string $title,
-		?string $description
+		?string $description,
+		int $max = null
 	) {
 		$this->id = $id;
 		$this->max = $max;

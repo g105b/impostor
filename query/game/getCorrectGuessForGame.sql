@@ -1,8 +1,7 @@
 select
 	guessId as id,
 	sg.title,
-	sg.description,
-	correct
+	sg.description
 
 from
 	game_has_guess
@@ -14,3 +13,5 @@ on
 
 where
 	gameId = ?
+and
+	correct = true

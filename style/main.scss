@@ -1,3 +1,7 @@
+body {
+	font-family: sans-serif;
+}
+
 body.uri-- {
 	.back-link {
 		display: none;
@@ -18,4 +22,122 @@ form {
 .userpic {
 	display: block;
 	width: 3rem;
+}
+
+.list-box {
+	.toggle {
+		display: block;
+		margin: 0;
+		padding: 0.25rem 0.5rem;
+		border: 1px solid black;
+		text-align: center;
+	}
+
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+
+		>li {
+			box-sizing: border-box;
+			width: 50%;
+			padding: 0.1rem;
+
+			>input {
+				display: none;
+			}
+
+			.overlay {
+				display: none;
+
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+
+				background: white;
+
+				h1 {
+
+				}
+
+				img {
+					width: 50%;
+				}
+
+				.description {
+
+				}
+			}
+
+			[type=checkbox]:checked ~ .overlay {
+				display: block;
+			}
+		}
+	}
+}
+
+.c-helper-buttons {
+	.identify {
+		position: fixed;
+		top: 0.5rem;
+		left: 50%;
+
+		>label {
+			display: block;
+			width: 3rem;
+			height: 3rem;
+			border-radius: 3rem;
+			border: 1px solid black;
+			margin-left: -1.5rem;
+
+			&::before {
+				content: "?";
+				font-size: 1.5rem;
+				display: block;
+				line-height: 3rem;
+				text-align: center;
+			}
+
+			>span {
+				display: none;
+			}
+
+			>div {
+				display: none;
+
+				position: fixed;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background: black;
+				color: white;
+				user-select: none;
+			}
+
+			&:active {
+				>div {
+					display: block;
+				}
+			}
+		}
+	}
+}
+
+.c-game-guesses {
+	margin-top: 3rem;
+
+	.toggle {
+		border-color: red;
+	}
+}
+
+.c-game-players {
+	.toggle {
+		border-color: blue;
+	}
 }

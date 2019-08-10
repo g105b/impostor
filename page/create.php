@@ -7,6 +7,7 @@ use Gt\WebEngine\Logic\Page;
 use Impostor\Auth\User;
 use Impostor\Auth\UserRepository;
 use Impostor\Game\GameRepository;
+use Impostor\Game\JoiningGameAlreadyStartedException;
 
 class CreatePage extends Page {
 	/** @var UserRepository */
@@ -33,6 +34,7 @@ class CreatePage extends Page {
 			$data->getInt("limiter"),
 			$data->getString("round")
 		);
+
 		$this->gameRepo->join($game, $user);
 		$this->redirect("/lobby?code=" . $game->getCode());
 	}

@@ -27,7 +27,6 @@ on
 	player_has_persona.personaId = scenario_guess_persona.id
 
 where
-	gameId = ?
+	user.id = ?
 
-order by
-	joined
+limit 1

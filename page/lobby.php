@@ -38,7 +38,7 @@ class LobbyPage extends Page {
 	):void {
 		$user = $this->userRepo->load();
 		$game = $this->gameRepo->getByCode($code);
-		$playerList = $this->gameRepo->getPlayerList($code);
+		$playerList = $this->gameRepo->getPlayerListByCode($code);
 		$playerListElement->bindList($playerList);
 
 		if(count($playerList) >= 3) {

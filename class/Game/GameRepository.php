@@ -71,15 +71,24 @@ class GameRepository {
 	/**
 	 * @return Player[]
 	 */
-	public function getPlayerList(string $code):array {
+	public function getPlayerList(Game $game):array {
 		$playerList = [];
-
-		$game = $this->getByCode($code);
 		foreach($this->db->fetchAll("getPlayers", $game->getId())
-		as $row) {
+			as $row) {
+			$persona = null;
+
+			if(!is_null($row->personaId)) {
+				$persona = new Persona(
+					$row->personaId,
+					$row->personaTitle,
+					$row->personaDescription
+				);
+			}
+
 			$playerList []= new Player(
-				$row->userId,
+				$row->id,
 				$row->cookie,
+				$persona,
 				$row->name,
 				new DateTime($row->joined)
 			);
@@ -88,8 +97,34 @@ class GameRepository {
 		return $playerList;
 	}
 
+	/**
+	 * @return Player[]
+	 */
+	public function getPlayerListByCode(string $code):array {
+		$game = $this->getByCode($code);
+		return $this->getPlayerList($game);
+	}
+
 	public function join(Game $game, User $user):void {
 		$this->leave($user);
+
+		if($game->isStarted()) {
+			$isAllowedToJoin = false;
+
+			foreach($this->getPlayerList($game) as $player) {
+				if($player->getCookie() === $user->getCookie()) {
+					$isAllowedToJoin = true;
+					break;
+				}
+			}
+
+			if(!$isAllowedToJoin) {
+				throw new JoiningGameAlreadyStartedException(
+					$game->getId()
+				);
+			}
+		}
+
 		$this->db->insert("join", [
 			"gameId" => $game->getId(),
 			"userId" => $user->getId(),
@@ -118,15 +153,10 @@ class GameRepository {
 			$game->getId()
 		);
 
-		$playerList = $this->getPlayerList($game->getCode());
+		$playerList = $this->getPlayerListByCode($game->getCode());
 		$personaList = $this->getPersonaList($correctGuess);
 
 		$impostor = $playerList[array_rand($playerList)];
-		$this->db->update(
-			"setImpostorForGame",
-			$impostor->getId(),
-			$game->getId()
-		);
 
 		foreach($playerList as $player) {
 			if($player === $impostor) {
@@ -166,6 +196,15 @@ class GameRepository {
 		return $this->gameFromRow($row);
 	}
 
+	public function getCorrectGuessForGame(Game $game):Guess {
+		$row = $this->db->fetch("getCorrectGuessForGame", $game->getId());
+		return new Guess(
+			$row->id,
+			$row->title,
+			$row->description
+		);
+	}
+
 	/** @return Guess[] */
 	public function getGuessList(Game $game):array {
 		$guessList = [];
@@ -203,10 +242,7 @@ class GameRepository {
 		foreach($this->db->fetchAll("getPersonasForGuess", $guess->getId())
 		as $row) {
 			$personaList [] = new Persona(
-				$row->id,
-				$row->max,
-				$row->title,
-				$row->description
+				$row->id, $row->title, $row->description, $row->max
 			);
 		}
 
