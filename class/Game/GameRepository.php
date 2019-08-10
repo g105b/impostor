@@ -71,7 +71,10 @@ class GameRepository {
 	/**
 	 * @return Player[]
 	 */
-	public function getPlayerList(Game $game):array {
+	public function getPlayerList(
+		Game $game,
+		int $excludePlayerId = null
+	):array {
 		$playerList = [];
 		foreach($this->db->fetchAll("getPlayers", $game->getId())
 			as $row) {
@@ -83,6 +86,10 @@ class GameRepository {
 					$row->personaTitle,
 					$row->personaDescription
 				);
+			}
+
+			if($excludePlayerId && $row->id == $excludePlayerId) {
+				continue;
 			}
 
 			$playerList []= new Player(

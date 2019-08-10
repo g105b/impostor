@@ -7,6 +7,9 @@ use Impostor\Auth\UserRepository;
 
 class Game {
 	const CODE_LENGTH = 7;
+	const TYPE_TIME_LIMIT = "time";
+	const TYPE_QUESTION_LIMIT = "question";
+
 	/** @var int */
 	private $id;
 	/** @var string */
@@ -70,5 +73,21 @@ class Game {
 
 	public function getScenarioId():int {
 		return $this->scenarioId;
+	}
+
+	public function getLimiter():int {
+		return $this->limiter;
+	}
+
+	public function getLimitType():string {
+		$type = strtolower($this->type);
+
+		if(strstr($type, self::TYPE_QUESTION_LIMIT)) {
+			return self::TYPE_QUESTION_LIMIT;
+		}
+
+		if(strstr($type, self::TYPE_TIME_LIMIT)) {
+			return self::TYPE_TIME_LIMIT;
+		}
 	}
 }
