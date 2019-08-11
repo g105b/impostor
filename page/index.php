@@ -12,11 +12,7 @@ class IndexPage extends Page {
 	public $gameRepo;
 
 	function go() {
-		$this->displayCurrentGameInfo();
-	}
-
-	function doJoin() {
-		$this->redirect("/game");
+		$this->forwardToGameIfJoined();
 	}
 
 	function doLeave() {
@@ -25,7 +21,7 @@ class IndexPage extends Page {
 		$this->reload();
 	}
 
-	function displayCurrentGameInfo() {
+	function forwardToGameIfJoined() {
 		$user = $this->userRepo->load();
 		$game = $this->gameRepo->getByUser($user);
 
@@ -33,8 +29,6 @@ class IndexPage extends Page {
 			return;
 		}
 
-		$t = $this->document->getTemplate("in-game");
-		$t->bindKeyValue("code", $game->getCode());
-		$t->insertTemplate();
+		$this->redirect("/game");
 	}
 }

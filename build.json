@@ -1,0 +1,43 @@
+{
+	"script/**/*.es6": {
+		"require": {
+			"node": "*",
+			"babel": "*",
+			"webpack": "*"
+		},
+		"execute": {
+			"command": "webpack",
+			"arguments": "script/main.es6 -o www/script.js --devtool source-map --module-bind js=babel-loader"
+		}
+	},
+
+	"script/**/*.js": {
+		"require": {
+			"vendor/bin/sync": "*"
+		},
+		"execute": {
+			"command": "vendor/bin/sync",
+			"arguments": "script/ www/script --delete"
+		}
+	},
+
+	"style/**/*.scss": {
+		"require": {
+			"sass": "*"
+		},
+		"execute": {
+			"command": "sass",
+			"arguments": "--cache-location style/.sass-cache style/main.scss www/style.css"
+		}
+	},
+
+	"asset/**/*": {
+		"require": {
+			"vendor/bin/sync": "*"
+		},
+		"execute": {
+			"command": "vendor/bin/sync",
+			"arguments": "asset/ www/asset --delete"
+		}
+	}
+}

@@ -92,10 +92,6 @@ class IndexPage extends Page {
 	function outputTurn(Element $turnElement) {
 		/** @var Turn[] $turnList */
 		$turnList = [];
-		$otherPlayers = $this->gameRepo->getPlayerList(
-			$this->game,
-			$this->player->getId()
-		);
 
 		if($this->game->getLimitType() === Game::TYPE_TIME_LIMIT) {
 			$this->document->getTemplate("turnNoLimitCount")
@@ -125,7 +121,5 @@ class IndexPage extends Page {
 				);
 			}
 		}
-
-		$lastTurn = end($turnList);
 	}
 }
