@@ -1,0 +1,22 @@
+<form method="post" class="c-audio-ask">
+	<h1>Ask your question</h1>
+
+	<p>Who do you want to ask your question to?</p>
+
+	<ul class="playerList">
+		<li data-template>
+			<label>
+				<input type="radio" name="player" data-bind:value="id" required />
+				<span data-bind:text="name">Player name</span>
+			</label>
+		</li>
+	</ul>
+
+	<div class="audio">
+		<input name="audio" type="file" accept="audio/*;capture=microphone" />
+	</div>
+
+	<div class="actions">
+		<button name="do" value="ask">Ask</button>
+	</div>
+</form>

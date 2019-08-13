@@ -91,7 +91,7 @@ class IndexPage extends Page {
 
 	function outputTurn(Element $turnElement) {
 		/** @var Turn[] $turnList */
-		$turnList = [];
+		$turnList = $this->gameRepo->getTurnList($this->game);
 
 		if($this->game->getLimitType() === Game::TYPE_TIME_LIMIT) {
 			$this->document->getTemplate("turnNoLimitCount")
@@ -112,6 +112,7 @@ class IndexPage extends Page {
 		if(empty($turnList)) {
 			if($this->game->getCreatorId() === $this->user->getId()) {
 				$this->document->getTemplate("turn-first")->insertTemplate();
+				$this->document->getTemplate("ask-button")->insertTemplate();
 			}
 			else {
 				$t = $this->document->getTemplate("turn-waiting-ask")->insertTemplate();
@@ -119,6 +120,13 @@ class IndexPage extends Page {
 					"playerTurn",
 					$this->game->getCreator($this->userRepo)->getName()
 				);
+			}
+		}
+		else {
+			/** @var Turn $turn */
+			$turn = end($turnList);
+			if($turn->getTo() === $this->player) {
+				$this->document->getTemplate("answer-button")->insertTemplate();
 			}
 		}
 	}

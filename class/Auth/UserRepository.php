@@ -68,11 +68,7 @@ class UserRepository {
 		}
 
 		return new Player(
-			$row->id,
-			$row->cookie,
-			$persona,
-			$row->name,
-			new DateTime($row->joined)
+			$row->id, $row->cookie, new DateTime($row->joined), $row->name, $persona
 		);
 	}
 

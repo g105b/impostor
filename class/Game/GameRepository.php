@@ -93,11 +93,7 @@ class GameRepository {
 			}
 
 			$playerList []= new Player(
-				$row->id,
-				$row->cookie,
-				$persona,
-				$row->name,
-				new DateTime($row->joined)
+				$row->id, $row->cookie, new DateTime($row->joined), $row->name, $persona
 			);
 		}
 
@@ -254,6 +250,34 @@ class GameRepository {
 		}
 
 		return $personaList;
+	}
+
+	/** @return Turn[] */
+	public function getTurnList(Game $game):array {
+		$turnList = [];
+
+		foreach($this->db->fetchAll("getTurnsForGame", $game->getId())
+		as $row) {
+			$turnList []= new Turn(
+				$row->id,
+				$row->turnNum,
+				new Player(
+					$row->askingPlayerId,
+					$row->askingCookie,
+					$row->askingJoined,
+					$row->askingName
+				),
+				new Player(
+					$row->accusedPlayerId,
+					$row->accusedCookie,
+					$row->accusedJoined,
+					$row->accusedName
+				),
+				new DateTime($row->asked)
+			);
+		}
+
+		return $turnList;
 	}
 
 	private function gameFromRow(Row $gameRow) {
