@@ -1,23 +1,26 @@
-<div class="game-controls">
+<div class="c-game-controls">
 	<a class="back" href="/game">Back to game</a>
 
 	<button class="play-all">Play all</button>
 </div>
 
 <ol class="c-turn-list">
-	<li>
-		<ul>
-			<li>
-				<span data-bind:text="questionPlayer">Asking Player</span> asked
-				<span data-bind:text="answerPlayer">Answering Player</span> a question
+	<li data-template="question">
+		<div class="question">
+			<span data-bind:text="questionPlayer">Asking Player</span> asked
+			<span data-bind:text="answerPlayer">Answering Player</span> a question
 
-				<audio />
-			</li>
-			<li>
+			<audio data-bind:src="questionAudioUri" controls></audio>
+
+			<div class="answer" data-template="answer">
 				<span data-bind:text="answerPlayer">Answering Player</span> answered
 
-				<audio />
-			</li>
-		</ul>
+				<audio data-bind:src="responseAudioUri" controls></audio>
+			</div>
+
+			<div class="answer" data-template="waiting">
+				Waiting for <span data-bind:text="answerPlayer">Answering Player</span>'s response...
+			</div>
+		</div>
 	</li>
 </ol>

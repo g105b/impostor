@@ -13,7 +13,10 @@ select
 	game_turn.accusedPlayerId,
 	accusedUser.cookie as accusedCookie,
 	accusedUser.name as accusedName,
-	accusedPlayer.joined as accusedJoined
+	accusedPlayer.joined as accusedJoined,
+
+	response.hash as responseHash,
+	response.responded
 
 from
 	(SELECT @turnNum:=0) r,
@@ -37,8 +40,13 @@ inner join
 on
 	accusedPlayer.userId = accusedUser.id
 
+left join
+	game_turn_response response
+on
+	game_turn.id = response.turnId
+
 where
-	game_turn.gameId = 3
+	game_turn.gameId = ?
 
 order by
 	asked

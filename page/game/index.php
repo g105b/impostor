@@ -106,12 +106,21 @@ class IndexPage extends Page {
 			);
 		}
 
-		$turnNumber = count($turnList) + 1;
+		$turnNumber = 1;
+		foreach($turnList as $turn) {
+			if($turn->hasResponse()) {
+				$turnNumber++;
+			}
+		}
 		$turnElement->bindKeyValue("turnNumber", $turnNumber);
+
+		/** @var Turn $turn */
+		$turn = end($turnList);
+		$turnEl = null;
 
 		if(empty($turnList)) {
 			if($this->game->getCreatorId() === $this->user->getId()) {
-				$this->document->getTemplate("turn-first")->insertTemplate();
+				$turnEl = $this->document->getTemplate("turn-first")->insertTemplate();
 				$this->document->getTemplate("ask-button")->insertTemplate();
 			}
 			else {
@@ -123,11 +132,26 @@ class IndexPage extends Page {
 			}
 		}
 		else {
-			/** @var Turn $turn */
-			$turn = end($turnList);
-			if($turn->getTo() === $this->player) {
+			if($turn->questionTo()->getId() === $this->player->getId()) {
+				$turnEl = $this->document->getTemplate("turn-answer")->insertTemplate();
 				$this->document->getTemplate("answer-button")->insertTemplate();
 			}
+			else {
+				if($turn->questionFrom()->getId() === $this->player->getId()) {
+					$turnEl = $this->document->getTemplate(
+						"turn-waiting-your-answer"
+					)->insertTemplate();
+				}
+				else {
+					$turnEl = $this->document->getTemplate(
+						"turn-waiting-answer"
+					)->insertTemplate();
+				}
+			}
+		}
+
+		if($turnEl) {
+			$turnEl->bindData($turn);
 		}
 	}
 }

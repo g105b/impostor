@@ -252,6 +252,20 @@ class GameRepository {
 		return $personaList;
 	}
 
+	public function createTurn(
+		Game $game,
+		Player $player,
+		int $accusedId,
+		string $hash
+	):int {
+		return $this->db->insert("createTurn", [
+			"gameId" => $game->getId(),
+			"playerId" => $player->getId(),
+			"accusedPlayerId" => $accusedId,
+			"hash" => $hash,
+		]);
+	}
+
 	/** @return Turn[] */
 	public function getTurnList(Game $game):array {
 		$turnList = [];
@@ -264,16 +278,21 @@ class GameRepository {
 				new Player(
 					$row->askingPlayerId,
 					$row->askingCookie,
-					$row->askingJoined,
+					new DateTime($row->askingJoined),
 					$row->askingName
 				),
 				new Player(
 					$row->accusedPlayerId,
 					$row->accusedCookie,
-					$row->accusedJoined,
+					new DateTime($row->accusedJoined),
 					$row->accusedName
 				),
-				new DateTime($row->asked)
+				new DateTime($row->asked),
+				$row->hash,
+				$row->responded
+					? new DateTime($row->responded)
+					: null,
+				$row->responseHash
 			);
 		}
 

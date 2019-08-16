@@ -25,9 +25,7 @@ class AskPage extends Page {
 	private $player;
 
 	function go() {
-		$this->user = $this->userRepo->load();
-		$this->player = $this->userRepo->getPlayer($this->user);
-		$this->game = $this->gameRepo->getByUser($this->user);
+		$this->loadObjects();
 
 		$this->checkPlayerCanAsk();
 		$this->outputOtherPlayers(
@@ -47,7 +45,21 @@ class AskPage extends Page {
 		$audioFile = $data->getFile("audio");
 		$audioFile->moveTo($dataFilePath);
 
+		$this->loadObjects();
+		$this->gameRepo->createTurn(
+			$this->game,
+			$this->player,
+			$data->getInt("player"),
+			$hash
+		);
+
 		$this->redirect("/game/turns#asked");
+	}
+
+	function loadObjects() {
+		$this->user = $this->userRepo->load();
+		$this->player = $this->userRepo->getPlayer($this->user);
+		$this->game = $this->gameRepo->getByUser($this->user);
 	}
 
 	function checkPlayerCanAsk() {

@@ -93,22 +93,27 @@
 
 		<div class="turn" data-template="turn-ask">
 			<h2>It's your turn</h2>
-			<p>You have answered <span data-bind:text="previousAsker">asker</span>'s question, now you get to ask a question.</p>
+			<p>You have answered <span data-bind:text="questionPlayer">asker</span>'s question, now you get to ask a question.</p>
 		</div>
 
 		<div class="turn" data-template="turn-answer">
 			<h2>It's your turn</h2>
-			<p><span data-bind:text="previousAsker">Asker</span> has asked you a question.</p>
+			<p><span data-bind:text="questionPlayer">Asker</span> has asked you a question.</p>
 		</div>
 
 		<div class="turn" data-template="turn-waiting-ask">
-			<h2>It's <span data-bind:text="playerTurn">turn</span>'s turn</h2>
+			<h2>It's <span data-bind:text="answerPlayer">turn</span>'s turn</h2>
 			<p>We are waiting for them to ask their question.</p>
 		</div>
 
 		<div class="turn" data-template="turn-waiting-answer">
-			<h2>It's <span data-bind:text="playerTurn">turn</span>'s turn</h2>
-			<p>We are waiting for them to answer <span data-bind:text="previous-asker">asker</span>'s question.</p>
+			<h2>It's <span data-bind:text="answerPlayer">turn</span>'s turn</h2>
+			<p>We are waiting for them to answer <span data-bind:text="questionPlayer">asker</span>'s question.</p>
+		</div>
+
+		<div class="turn" data-template="turn-waiting-your-answer">
+			<h2>It's <span data-bind:text="answerPlayer">turn</span>'s turn</h2>
+			<p>We are waiting for them to answer your question.</p>
 		</div>
 	</div>
 </main>
