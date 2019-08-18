@@ -23,6 +23,30 @@ class TurnsPage extends Page {
 		$this->outputTurns(
 			$this->document->querySelector(".c-turn-list")
 		);
+
+		$this->input->when(["action" => "asked"])
+			->call([$this, "asked"]);
+		$this->input->when(["action" => "answered"])
+			->call([$this, "answered"]);
+	}
+
+	function asked() {
+		$this->document->getTemplate(
+			"asked-message"
+		)->insertTemplate();
+	}
+
+	function answered() {
+		$turnList = $this->gameRepo->getTurnList($this->game);
+		$lastTurn = end($turnList);
+
+		$message = $this->document->getTemplate(
+			"answered-message"
+		)->insertTemplate();
+		$message->bindKeyValue(
+			"questionPlayer",
+			$lastTurn->questionFrom()->getName()
+		);
 	}
 
 	function outputTurns(Element $turnListEl) {

@@ -2,7 +2,7 @@
 	<a class="back" href="/game">Back to game</a>
 </div>
 
-<form method="post" class="c-audio-ask">
+<form method="post" class="c-audio-recorder ask" enctype="multipart/form-data">
 	<h1>Ask your question</h1>
 
 	<p>Who do you want to ask your question to?</p>
@@ -16,11 +16,11 @@
 		</li>
 	</ul>
 
-	<div class="audio">
+	<div class="audio-recorder">
 		<input name="audio" type="file" accept="audio/*;capture=microphone" />
 	</div>
 
 	<div class="actions">
-		<button name="do" value="ask">Ask</button>
+		<button name="do" value="ask">Send question</button>
 	</div>
 </form>

@@ -204,7 +204,8 @@ class GameRepository {
 		return new Guess(
 			$row->id,
 			$row->title,
-			$row->description
+			$row->description,
+			$row->guessTerm
 		);
 	}
 
@@ -217,7 +218,8 @@ class GameRepository {
 			$guessList []= new Guess(
 				$row->id,
 				$row->title,
-				$row->description
+				$row->description,
+				$row->guessTerm
 			);
 		}
 
@@ -262,6 +264,19 @@ class GameRepository {
 			"gameId" => $game->getId(),
 			"playerId" => $player->getId(),
 			"accusedPlayerId" => $accusedId,
+			"hash" => $hash,
+		]);
+	}
+
+	public function createTurnResponse(
+		Game $game,
+		string $hash
+	) {
+		$turnList = $this->getTurnList($game);
+		$lastTurn = end($turnList);
+
+		return $this->db->insert("createTurnResponse", [
+			"turnId" => $lastTurn->getId(),
 			"hash" => $hash,
 		]);
 	}
@@ -334,7 +349,8 @@ class GameRepository {
 			$guessList []= new Guess(
 				$row->id,
 				$row->title,
-				$row->description
+				$row->description,
+				$row->guessTerm
 			);
 		}
 

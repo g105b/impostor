@@ -40,7 +40,11 @@ class Turn implements BindDataGetter {
 		$this->asked = $asked;
 		$this->hash = $hash;
 		$this->responded = $responded;
-		$this->hashResponse = $hash;
+		$this->hashResponse = $hashResponse;
+	}
+
+	public function getId():int {
+		return $this->id;
 	}
 
 	public function questionFrom():Player {
@@ -63,21 +67,55 @@ class Turn implements BindDataGetter {
 		return $this->questionTo()->getName();
 	}
 
-	public function getQuestionAudioUri():string {
-		$hashFilename = $this->hash . ".webm";
-		$uri = "/audio/$hashFilename";
+	public function getQuestionPlayerImage():string {
+		return $this->questionFrom()->getWebPictureUri();
+	}
 
-		$dataFile = implode(DIRECTORY_SEPARATOR, [
+	public function getAnswerPlayerImage():string {
+		return $this->questionTo()->getWebPictureUri();
+	}
+
+	public function getQuestionAudioUri():string {
+		$this->makeFilePublic(false);
+		return $this->getHashUri(false);
+	}
+
+	public function getResponseAudioUri():string {
+		$this->makeFilePublic(true);
+		return $this->getHashUri(true);
+	}
+
+	private function getHashFilename(bool $response = false):string {
+		return (
+			$response
+				? $this->hashResponse
+				: $this->hash
+			) . ".webm";
+	}
+
+	private function getHashUri(bool $response = false):string {
+		return "/audio/" . $this->getHashFilename($response);
+	}
+
+	private function getDataFile(bool $response = false):string {
+		return implode(DIRECTORY_SEPARATOR, [
 			Path::getDataDirectory(),
 			"audio",
-			$hashFilename,
+			$this->getHashFilename($response),
 		]);
+	}
 
-		$publicDataFile = implode(DIRECTORY_SEPARATOR, [
+	private function getPublicDataFile(bool $response = false):string {
+		return implode(DIRECTORY_SEPARATOR, [
 			Path::getWwwDirectory(),
 			"audio",
-			$hashFilename,
+			$this->getHashFilename($response),
 		]);
+	}
+
+	private function makeFilePublic(bool $response = false):void {
+		$dataFile = $this->getDataFile($response);
+		$publicDataFile = $this->getPublicDataFile($response);
 
 		if(!is_dir(dirname($publicDataFile))) {
 			mkdir(dirname($publicDataFile), 0775, true);
@@ -86,7 +124,5 @@ class Turn implements BindDataGetter {
 		if(!is_file($publicDataFile)) {
 			copy($dataFile, $publicDataFile);
 		}
-
-		return $uri;
 	}
 }

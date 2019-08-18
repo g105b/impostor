@@ -10,8 +10,9 @@ use Impostor\Auth\UserRepository;
 use Impostor\Game\Game;
 use Impostor\Game\GameRepository;
 use Impostor\Game\Player;
+use Impostor\Game\Turn;
 
-class AskPage extends Page {
+class AnswerPage extends Page {
 	/** @var UserRepository */
 	public $userRepo;
 	/** @var GameRepository */
@@ -27,13 +28,13 @@ class AskPage extends Page {
 	function go() {
 		$this->loadObjects();
 
-		$this->checkPlayerCanAsk();
-		$this->outputOtherPlayers(
-			$this->document->querySelector(".c-audio-recorder .playerList")
+		$this->checkPlayerCanAnswer();
+		$this->outputQuestion(
+			$this->document->querySelector(".c-audio-recorder")
 		);
 	}
 
-	function doAsk(InputData $data) {
+	function doAnswer(InputData $data) {
 		$hash = bin2hex(random_bytes(16));
 
 		$dataFilePath = implode(DIRECTORY_SEPARATOR, [
@@ -46,14 +47,12 @@ class AskPage extends Page {
 		$audioFile->moveTo($dataFilePath);
 
 		$this->loadObjects();
-		$this->gameRepo->createTurn(
+		$this->gameRepo->createTurnResponse(
 			$this->game,
-			$this->player,
-			$data->getInt("player"),
 			$hash
 		);
 
-		$this->redirect("/game/turns?action=asked");
+		$this->redirect("/game/turns?action=answered");
 	}
 
 	function loadObjects() {
@@ -62,29 +61,34 @@ class AskPage extends Page {
 		$this->game = $this->gameRepo->getByUser($this->user);
 	}
 
-	function checkPlayerCanAsk() {
+	function checkPlayerCanAnswer() {
 		$turns = $this->gameRepo->getTurnList($this->game);
 
-		if(empty($turns)
-		&& $this->game->getCreatorId() !== $this->user->getId()) {
+		if(empty($turns)) {
 			$this->redirect("/game");
 		}
 
+		/** @var Turn $lastTurn */
 		$lastTurn = end($turns);
 
-		if($lastTurn
-		&& $lastTurn->questionTo()->getId() !== $this->user->getId()) {
+		if($lastTurn->hasResponse()
+		|| $lastTurn->questionTo()->getId() !== $this->user->getId()) {
 			$this->redirect("/game");
 		}
 	}
 
-	function outputOtherPlayers(Element $playerListEl) {
-		$playerList = $this->gameRepo->getPlayerList(
-			$this->game,
-			$this->player->getId()
-		);
-		shuffle($playerList);
+	function outputQuestion(Element $form) {
+		$turns = $this->gameRepo->getTurnList($this->game);
+		/** @var Turn $lastTurn */
+		$lastTurn = end($turns);
 
-		$playerListEl->bindList($playerList);
+		$form->bindKeyValue(
+			"questionPlayer",
+			$lastTurn->questionFrom()->getName()
+		);
+		$form->bindKeyValue(
+			"questionAudioUri",
+			$lastTurn->getQuestionAudioUri()
+		);
 	}
 }

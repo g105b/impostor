@@ -1,0 +1,23 @@
+<div class="c-game-controls">
+	<a class="back" href="/game">Back to game</a>
+</div>
+
+<form method="post" class="c-audio-recorder answer" enctype="multipart/form-data">
+	<h1>Answer <span data-bind:text="questionPlayer">Asking Player</span>'s question</h1>
+
+	<div class="play">
+		<audio data-bind:src="questionAudioUri" controls></audio>
+	</div>
+
+	<p>
+		<span data-bind:text="questionPlayer">Asking Player</span> has asked you a question. Listen to the question above, then record your response below. After you have sent your response, you will be able to record your own question to someone.
+	</p>
+
+	<div class="audio-recorder">
+		<input name="audio" type="file" accept="audio/*;capture=microphone" />
+	</div>
+
+	<div class="actions">
+		<button name="do" value="answer">Send answer</button>
+	</div>
+</form>

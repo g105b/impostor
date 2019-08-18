@@ -111,7 +111,27 @@ insert into impostor.scenario_guess(scenarioId, title)
 values(@scenarioId, 'Area 51');
 set @guessId = last_insert_id();
 insert into impostor.scenario_guess_persona(guessId, title, max)
-values(@guessId, '?????', null);
+values(@guessId, 'Imprisoned Martian', 1);
+insert into impostor.scenario_guess_persona(guessId, title, max)
+values(@guessId, 'Helium-3 Fusion Research Analyst', 1);
+insert into impostor.scenario_guess_persona(guessId, title, max)
+values(@guessId, 'Active Camouflage Engineer', 1);
+insert into impostor.scenario_guess_persona(guessId, title, max)
+values(@guessId, 'Lunar Studio Lighting Engineer', 1);
+insert into impostor.scenario_guess_persona(guessId, title, max)
+values(@guessId, 'Command Centre Officer', 1);
+insert into impostor.scenario_guess_persona(guessId, title, max)
+values(@guessId, 'Internet Redactor', 1);
+insert into impostor.scenario_guess_persona(guessId, title, max)
+values(@guessId, 'Transportation Security Specialist', 1);
+insert into impostor.scenario_guess_persona(guessId, title, max)
+values(@guessId, 'F-22 Pilot', 1);
+insert into impostor.scenario_guess_persona(guessId, title, max)
+values(@guessId, 'Chief Cover-up Coordinator', 1);
+insert into impostor.scenario_guess_persona(guessId, title, max)
+values(@guessId, 'Biometric Security Guard', null);
+insert into impostor.scenario_guess_persona(guessId, title, max)
+values(@guessId, 'Boundary Security Patrol', null);
 
 insert into impostor.scenario_guess(scenarioId, title)
 values(@scenarioId, 'Police Station');

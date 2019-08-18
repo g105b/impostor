@@ -4,20 +4,26 @@ namespace Impostor\Game;
 use Gt\DomTemplate\BindDataGetter;
 
 class Guess implements BindDataGetter {
+	const DEFAULT_TERM = "location";
+
 	/** @var int */
 	private $id;
 	/** @var string */
 	private $title;
+	/** @var string|null */
+	private $term;
 	/** @var string|null */
 	private $description;
 
 	public function __construct(
 		int $id,
 		string $title,
-		string $description = null
+		string $description = null,
+		string $term = null
 	) {
 		$this->id = $id;
 		$this->title = $title;
+		$this->term = $term;
 		$this->description = $description;
 	}
 
@@ -31,5 +37,9 @@ class Guess implements BindDataGetter {
 
 	public function getDescription():string {
 		return $this->description ?? "No description available";
+	}
+
+	public function getTerm():string {
+		return $this->term ?? self::DEFAULT_TERM;
 	}
 }

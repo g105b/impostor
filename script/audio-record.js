@@ -1,12 +1,12 @@
 (function() {
-let audioInput = document.querySelector(".audio input");
+let audioInput = document.querySelector(".audio-recorder input");
 if(!audioInput) {
 	return;
 }
 
 function setUpMedia(stream) {
 	audioInput.hidden = true;
-	const askButton = document.querySelector("[name=do][value=ask]");
+	const submitButton = document.querySelector("[name=do]");
 	const button = document.createElement("button");
 	const RECORDING_LENGTH = 12;
 	const options = {mimeType: 'audio/webm'};
@@ -20,12 +20,13 @@ function setUpMedia(stream) {
 
 	audioInput.form.addEventListener("submit", function(e) {
 		e.preventDefault();
+		let askAnswer = submitButton.value;
 
 		let url = this.getAttribute("action")
 			|| window.location.href;
 		let formData = new FormData(this);
 		formData.set("audio", file);
-		formData.set("do", "ask");
+		formData.set("do", askAnswer);
 
 		fetch(url, {
 			credentials: "include",
@@ -34,7 +35,7 @@ function setUpMedia(stream) {
 			body: formData,
 		}).then(function(response) {
 			if(response.ok) {
-				window.location.href = "/game/turns#asked";
+				window.location.href = response.url;
 			}
 		});
 	});
@@ -52,14 +53,14 @@ function setUpMedia(stream) {
 		delete button.dataset.recording;
 		clearTimeout(recTimeout);
 		recTimeout = null;
-		askButton.disabled = false;
+		submitButton.disabled = false;
 
 		file = new File([blob], "example.webm");
 	});
 
 	button.addEventListener("click", function(e) {
 		e.preventDefault();
-		askButton.disabled = true;
+		submitButton.disabled = true;
 
 		if(this.dataset.recording) {
 			mediaRecorder.stop();

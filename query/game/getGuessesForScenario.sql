@@ -1,11 +1,17 @@
 select
-	id,
+	scenario_guess.id,
 	scenarioId,
-	title,
-	description
+	scenario_guess.title,
+	scenario_guess.description,
+	scenario.guessTerm
 
 from
 	scenario_guess
+
+inner join
+	scenario
+on
+	scenario_guess.scenarioId = scenario.id
 
 where
 	scenarioId = ?

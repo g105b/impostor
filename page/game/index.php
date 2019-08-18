@@ -132,20 +132,35 @@ class IndexPage extends Page {
 			}
 		}
 		else {
-			if($turn->questionTo()->getId() === $this->player->getId()) {
-				$turnEl = $this->document->getTemplate("turn-answer")->insertTemplate();
-				$this->document->getTemplate("answer-button")->insertTemplate();
-			}
-			else {
-				if($turn->questionFrom()->getId() === $this->player->getId()) {
-					$turnEl = $this->document->getTemplate(
-						"turn-waiting-your-answer"
-					)->insertTemplate();
+			if($turn->hasResponse()) {
+				if($turn->questionTo()->getId() === $this->player->getId()) {
+					$turnEl = $this->document->getTemplate("turn-ask")->insertTemplate();
+					$this->document->getTemplate("ask-button")->insertTemplate();
+					$turnEl->bindData($turn);
 				}
 				else {
 					$turnEl = $this->document->getTemplate(
-						"turn-waiting-answer"
+						"turn-waiting-ask"
 					)->insertTemplate();
+					$turnEl->bindData($turn);
+				}
+			}
+			else {
+				if($turn->questionTo()->getId() === $this->player->getId()) {
+					$turnEl = $this->document->getTemplate("turn-answer")->insertTemplate();
+					$this->document->getTemplate("answer-button")->insertTemplate();
+				}
+				else {
+					if($turn->questionFrom()->getId() === $this->player->getId()) {
+						$turnEl = $this->document->getTemplate(
+							"turn-waiting-your-answer"
+						)->insertTemplate();
+					}
+					else {
+						$turnEl = $this->document->getTemplate(
+							"turn-waiting-answer"
+						)->insertTemplate();
+					}
 				}
 			}
 		}

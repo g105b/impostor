@@ -6,14 +6,25 @@
 
 <ol class="c-turn-list">
 	<li data-template="question">
-		<div class="question">
-			<span data-bind:text="questionPlayer">Asking Player</span> asked
-			<span data-bind:text="answerPlayer">Answering Player</span> a question
+			<div class="question">
+				<div class="audio-control">
+					<img data-bind:src="questionPlayerImage" />
+					<div>
+						<span data-bind:text="questionPlayer">Asking Player</span> asked
+						<span data-bind:text="answerPlayer">Answering Player</span> a question
+					</div>
+				</div>
 
-			<audio data-bind:src="questionAudioUri" controls></audio>
+				<audio data-bind:src="questionAudioUri" controls></audio>
+			</div>
 
 			<div class="answer" data-template="answer">
-				<span data-bind:text="answerPlayer">Answering Player</span> answered
+				<div class="audio-control">
+					<img data-bind:src="answerPlayerImage" />
+					<div>
+						<span data-bind:text="answerPlayer">Answering Player</span> answered
+					</div>
+				</div>
 
 				<audio data-bind:src="responseAudioUri" controls></audio>
 			</div>
@@ -21,6 +32,15 @@
 			<div class="answer" data-template="waiting">
 				Waiting for <span data-bind:text="answerPlayer">Answering Player</span>'s response...
 			</div>
-		</div>
 	</li>
 </ol>
+
+<div class="c-message-area">
+	<div data-template="asked-message">
+		<p>You have asked your question, and we're waiting for the response.</p>
+	</div>
+
+	<div data-template="answered-message">
+		<p>You have answered <span data-bind:text="questionPlayer">Asking Player</span>'s question. You now get to <a href="/game/ask">ask your own</a>.</p>
+	</div>
+</div>
