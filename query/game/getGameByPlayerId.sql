@@ -20,5 +20,7 @@ on
 
 where
 	player.userId = ?
+and
+	completed is null
 
 limit 1

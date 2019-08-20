@@ -1,0 +1,55 @@
+<h1>Last chance!</h1>
+
+<p>It is the end of the game, but nobody has yet accused the impostor, nor has the impostor made a guess.</p>
+
+<div class="c-last-chance">
+	<section class="impostor">
+		<h2>You are the impostor</h2>
+		<p>You can win if you guess the correct <span data-bind:text="term">guessthing</span>...</p>
+
+		<div class="c-game-guesses list-box">
+			<ul class="guessList">
+				<li data-template>
+					<input id="guess-{id}" type="checkbox" data-bind-parameters />
+					<label class="toggle" for="guess-{id}" data-bind:text="title" data-bind-parameters>Name of guess</label>
+
+					<form method="post" class="overlay">
+						<input type="hidden" name="id" data-bind:value="id" />
+
+						<h1 data-bind:text="title">Name of guess</h1>
+						<div class="description"></div>
+
+						<div class="actions">
+							<button name="do" value="guess">Guess this <span data-bind:text="term">guessthing</span>!</button>
+							<label for="guess-{id}" data-bind-parameters>Close</label>
+						</div>
+					</form>
+				</li>
+			</ul>
+		</div>
+	</section>
+
+	<section class="player c-game-players list-box">
+		<h2>Your role is: <span data-bind:text="personaTitle">role name</span></h2>
+		<p>You can win if everybody calls out the impostor correctly. Cast your vote now - who do you think was the impostor?</p>
+
+		<ul class="playerList">
+			<li data-template>
+				<input id="player-{id}" type="checkbox" data-bind-parameters />
+				<label class="toggle" for="player-{id}" data-bind:text="name" data-bind-parameters>Player name</label>
+
+				<form method="post" class="overlay">
+					<input type="hidden" name="playerId" data-bind:value="id" />
+					<h1 data-bind:text="name">Player name</h1>
+
+					<img src="/asset/img/default.svg" data-bind:src="webPictureUri" />
+
+					<div class="actions">
+						<button name="do" value="guessImpostor">Accuse as Impostor!</button>
+						<label for="player-{id}" data-bind-parameters>Close</label>
+					</div>
+				</form>
+			</li>
+		</ul>
+	</section>
+</div>

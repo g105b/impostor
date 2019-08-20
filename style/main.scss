@@ -361,3 +361,23 @@ main {
 .c-message-area {
 	margin: 6rem 0;
 }
+
+.c-last-chance {
+	>section {
+		display: none;
+
+		&.display {
+			display: block;
+		}
+	}
+}
+
+.c-results-screen {
+	>section {
+		display: none;
+
+		&.display {
+			display: block;
+		}
+	}
+}

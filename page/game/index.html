@@ -53,6 +53,7 @@
 				<label class="toggle" for="player-{id}" data-bind:text="name" data-bind-parameters>Player name</label>
 
 				<form method="post" class="overlay">
+					<input type="hidden" name="playerId" data-bind:value="id" />
 					<h1 data-bind:text="name">Player name</h1>
 
 					<img src="/asset/img/default.svg" data-bind:src="webPictureUri" />

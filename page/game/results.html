@@ -1,0 +1,76 @@
+<h1>Results</h1>
+
+<div class="c-results-screen">
+	<section class="waiting">
+		<p>Before the results are calculated, we have to wait for the following players to cast their final vote:</p>
+
+		<ul>
+			<li data-template data-bind:text="name">Player name</li>
+		</ul>
+	</section>
+
+	<section class="early-accusation">
+		<h1>
+			<span data-bind:text="name">Player name</span> has made an accusation!
+		</h1>
+
+		<p><span data-bind:text="accusedName">Accused name</span> has been called out as the impostor.</p>
+
+		<p>The actual impostor for this round was...</p>
+
+		<h2 data-bind:text="impostorName">Impostor name</h2>
+
+		<h3>
+			<span data-bind:text="winPlayerName">Player name</span>
+			wins!
+		</h3>
+	</section>
+
+	<section class="early-guess">
+		<h1>The impostor has made an early guess!</h1>
+		<p><span data-bind:text="name">Player name</span> was the impostor.</p>
+		<p>They have guessed that the correct <span data-bind:text="term">guess term</span> is...</p>
+		<h2 data-bind:text="guess">Guess goes here</h2>
+		<h3>
+			<span data-bind:text="name">Player name</span>
+			<span data-bind:text="win-lose">wins/loses</span>
+			!
+		</h3>
+	</section>
+
+	<section class="end-game-votes">
+		<h1>The votes are in!</h1>
+		<p>Who was voted as the impostor?</p>
+		<ul class="accusedList">
+			<li data-template>
+				<span data-bind:text="name">Player name</span>
+				received
+				<span data-bind:text="voteCount">0</span>
+				votes
+			</li>
+		</ul>
+
+		<p>The impostor was...</p>
+
+		<h2 data-bind:text="impostorName">Player name</h2>
+
+		<p><span data-bind:text="impostorName">Player name</span>'s guess was...</p>
+
+		<h2 data-bind:text="guess">Guess title</h2>
+
+		<p>The correct <span data-bind:text="term">guess term</span> was <span data-bind:text="correctGuess">Correct Guess</span>.</p>
+
+		<div class="winnerBox">
+			<h3>
+				<span data-bind:text="winner">Player name</span>
+				wins the round!
+			</h3>
+
+			<img src="/asset/img/nobody-wins.svg" data-bind:src="winnerPicture" />
+		</div>
+
+		<div class="actions">
+			<a href="/">Leave game</a>
+		</div>
+	</section>
+</div>

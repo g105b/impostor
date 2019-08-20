@@ -191,7 +191,7 @@ class GameRepository {
 	 * the user isn't in a game.
 	 */
 	public function getByUser(User $user):?Game {
-		$row = $this->db->fetch("getByPlayerId", $user->getId());
+		$row = $this->db->fetch("getGameByPlayerId", $user->getId());
 		if(is_null($row)) {
 			return null;
 		}
@@ -281,6 +281,98 @@ class GameRepository {
 		]);
 	}
 
+	public function voteImpostor(
+		Player $player,
+		Player $voteePlayer
+	) {
+		$this->db->insert("voteForImpostor", [
+			"playerId" => $player->getId(),
+			"votePlayerId" => $voteePlayer->getId(),
+		]);
+	}
+
+	public function impostorVoteGuess(
+		Player $impostorPlayer,
+		int $guessId
+	) {
+		$this->db->insert("voteForGuess", [
+			"playerId" => $impostorPlayer->getId(),
+			"guessId" => $guessId,
+		]);
+	}
+
+	/** @return Player[] */
+	public function getAccusedImpostors(Game $game):array {
+		$playerList = [];
+
+		foreach($this->db->fetchAll(
+			"getVoteImpostors",
+			$game->getId()
+		) as $row) {
+			$playerList []= new AccusedPlayer(
+				$row->playerId,
+				$row->cookie,
+				new DateTime($row->joined),
+				$row->name,
+				$row->voteCount
+			);
+		}
+
+		return $playerList;
+	}
+
+	public function hasPlayerAccusedSomeone(Player $player):bool {
+		$row = $this->db->fetch(
+			"getAccusationByPlayerId",
+			$player->getId()
+		);
+
+		return !is_null($row);
+	}
+
+	public function getImpostorGuess(Game $game):?Guess {
+		$row = $this->db->fetch("getVoteGuess", $game->getId());
+
+		if(is_null($row)) {
+			return null;
+		}
+
+		return new Guess(
+			$row->guessId,
+			$row->title,
+			$row->description,
+			$row->term
+		);
+	}
+
+	/** @return Player[] */
+	public function waitingForVotes(Game $game):array {
+		$impostorVotes = $this->db->fetchAll(
+			"getImpostorVotesForGame",
+			$game->getId()
+		);
+		$guessVote = $this->db->fetch(
+			"getGuessVoteForGame",
+			$game->getId()
+		);
+
+		$waitingForPlayers = $this->getPlayerList($game);
+		foreach($waitingForPlayers as $i => $player) {
+			if($guessVote
+			&& $guessVote->playerId == $player->getId()) {
+				unset($waitingForPlayers[$i]);
+			}
+
+			foreach($impostorVotes as $row) {
+				if($row->playerId == $player->getId()) {
+					unset($waitingForPlayers[$i]);
+				}
+			}
+		}
+
+		return $waitingForPlayers;
+	}
+
 	/** @return Turn[] */
 	public function getTurnList(Game $game):array {
 		$turnList = [];
@@ -314,10 +406,18 @@ class GameRepository {
 		return $turnList;
 	}
 
+	public function completeGame(Game $game):void {
+		$this->db->update("completeGame", $game->getId());
+	}
+
 	private function gameFromRow(Row $gameRow) {
 		$started = null;
 		if($gameRow->started) {
 			$started = new DateTime($gameRow->started);
+		}
+		$completed = null;
+		if($gameRow->completed) {
+			$completed = new DateTime($gameRow->completed);
 		}
 
 		return new Game(
@@ -328,7 +428,8 @@ class GameRepository {
 			$gameRow->limiter,
 			$gameRow->round,
 			$gameRow->userCreatorId,
-			$started
+			$started,
+			$completed
 		);
 	}
 

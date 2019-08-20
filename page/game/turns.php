@@ -7,6 +7,7 @@ use Impostor\Auth\UserRepository;
 use Impostor\Game\Game;
 use Impostor\Game\GameRepository;
 use Impostor\Game\Player;
+use Impostor\Game\Turn;
 
 class TurnsPage extends Page {
 	/** @var GameRepository */
@@ -18,8 +19,14 @@ class TurnsPage extends Page {
 	/** @var Player */
 	private $player;
 
+	/** @var Turn[] */
+	private $turnList;
+	/** @var Turn */
+	private $lastTurn;
+
 	function go() {
 		$this->loadEntities();
+		$this->loadTurns();
 		$this->outputTurns(
 			$this->document->querySelector(".c-turn-list")
 		);
@@ -30,29 +37,45 @@ class TurnsPage extends Page {
 			->call([$this, "answered"]);
 	}
 
+	function loadEntities() {
+		$user = $this->userRepo->load();
+		$this->game = $this->gameRepo->getByUser($user);
+		$this->player = $this->userRepo->getPlayer($user);
+	}
+
+	function loadTurns() {
+		$this->turnList = $this->gameRepo->getTurnList($this->game);
+		$this->lastTurn = end($turnList);
+	}
+
 	function asked() {
-		$this->document->getTemplate(
-			"asked-message"
-		)->insertTemplate();
+		if(count($this->turnList) < $this->game->getLimiter()) {
+			$this->document->getTemplate(
+				"asked-message"
+			)->insertTemplate();
+		}
 	}
 
 	function answered() {
-		$turnList = $this->gameRepo->getTurnList($this->game);
-		$lastTurn = end($turnList);
+		if(count($this->turnList) >= $this->game->getLimiter()) {
+			$message = $this->document->getTemplate(
+				"last-answer-message"
+			)->insertTemplate();
+		}
+		else {
+			$message = $this->document->getTemplate(
+				"answered-message"
+			)->insertTemplate();
+		}
 
-		$message = $this->document->getTemplate(
-			"answered-message"
-		)->insertTemplate();
 		$message->bindKeyValue(
 			"questionPlayer",
-			$lastTurn->questionFrom()->getName()
+			$this->lastTurn->questionFrom()->getName()
 		);
 	}
 
 	function outputTurns(Element $turnListEl) {
-		$turnList = $this->gameRepo->getTurnList($this->game);
-
-		foreach($turnList as $turn) {
+		foreach($this->turnList as $turn) {
 			$questionTemplate = $this->document->getTemplate("question");
 			$questionTemplate->bindData($turn);
 			$questionElement = $turnListEl->appendChild($questionTemplate);
@@ -63,11 +86,5 @@ class TurnsPage extends Page {
 				$questionElement->appendChild($answerTemplate);
 			}
 		}
-	}
-
-	function loadEntities() {
-		$user = $this->userRepo->load();
-		$this->game = $this->gameRepo->getByUser($user);
-		$this->player = $this->userRepo->getPlayer($user);
 	}
 }

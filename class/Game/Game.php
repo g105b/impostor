@@ -26,6 +26,8 @@ class Game {
 	private $creatorId;
 	/** @var DateTime */
 	private $started;
+	/** @var DateTime */
+	private $completed;
 
 	public function __construct(
 		int $id,
@@ -35,7 +37,8 @@ class Game {
 		int $limiter,
 		string $round,
 		int $creatorId,
-		DateTime $started = null
+		DateTime $started = null,
+		DateTime $completed = null
 	) {
 		$this->id = $id;
 		$this->code = $code;
@@ -45,6 +48,7 @@ class Game {
 		$this->round = $round;
 		$this->creatorId = $creatorId;
 		$this->started = $started;
+		$this->completed = $completed;
 	}
 
 	public function getId():int {
@@ -65,6 +69,10 @@ class Game {
 
 	public function isStarted():bool {
 		return (bool)$this->started;
+	}
+
+	public function isComplete():bool {
+		return (bool)$this->completed;
 	}
 
 	public function getLobbyUri():string {

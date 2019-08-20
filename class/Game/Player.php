@@ -18,7 +18,6 @@ class Player extends User {
 		?Persona $persona = null
 	) {
 		parent::__construct($id, $cookie, $name);
-
 		$this->persona = $persona;
 		$this->joined = $joined;
 	}

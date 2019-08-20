@@ -17,6 +17,7 @@ function setUpPlayer(audio) {
 	audio.addEventListener("pause", pause);
 
 	button.addEventListener("click", function(e) {
+		e.preventDefault();
 		continuePlaying = false;
 
 		if(button.classList.contains("playing")) {

@@ -68,7 +68,40 @@ class UserRepository {
 		}
 
 		return new Player(
-			$row->id, $row->cookie, new DateTime($row->joined), $row->name, $persona
+			$row->id,
+			$row->cookie,
+			new DateTime($row->joined),
+			$row->name,
+			$persona
+		);
+	}
+
+	public function getPlayerById(int $id):?Player {
+		$row = $this->db->fetch(
+			"getPlayerById",
+			$id
+		);
+
+		if(is_null($row)) {
+			return null;
+		}
+
+		$persona = null;
+
+		if(!is_null($row->personaId)) {
+			$persona = new Persona(
+				$row->personaId,
+				$row->personaTitle,
+				$row->personaDescription
+			);
+		}
+
+		return new Player(
+			$row->id,
+			$row->cookie,
+			new DateTime($row->joined),
+			$row->name,
+			$persona
 		);
 	}
 

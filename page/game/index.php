@@ -93,6 +93,10 @@ class IndexPage extends Page {
 		/** @var Turn[] $turnList */
 		$turnList = $this->gameRepo->getTurnList($this->game);
 
+		if(count($turnList) >= $this->game->getLimiter()) {
+			$this->redirect("/game/last-chance");
+		}
+
 		if($this->game->getLimitType() === Game::TYPE_TIME_LIMIT) {
 			$this->document->getTemplate("turnNoLimitCount")
 				->insertTemplate();

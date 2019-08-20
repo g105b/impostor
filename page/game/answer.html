@@ -6,6 +6,10 @@
 	<h1>Answer <span data-bind:text="questionPlayer">Asking Player</span>'s question</h1>
 
 	<div class="play">
+		<div class="audio-control">
+			<p>Listen to <span data-bind:text="questionPlayer">Asking Player</span>'s question.</p>
+		</div>
+
 		<audio data-bind:src="questionAudioUri" controls></audio>
 	</div>
 
