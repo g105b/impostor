@@ -4,6 +4,7 @@ namespace Impostor\Page;
 use Gt\DomTemplate\Element;
 use Gt\WebEngine\Logic\Page;
 use Impostor\Auth\UserRepository;
+use Impostor\Game\GameCodeNotFoundException;
 use Impostor\Game\GameRepository;
 
 class LobbyPage extends Page {
@@ -29,6 +30,19 @@ class LobbyPage extends Page {
 		$game = $this->gameRepo->getByUser($user);
 		$this->gameRepo->start($game, $user);
 		$this->reload();
+	}
+
+	function doLeave() {
+		$user = $this->userRepo->load();
+		$game = $this->gameRepo->getByUser($user);
+		$creatorId = $game->getCreatorId();
+		$this->gameRepo->leave($user);
+
+		if($creatorId === $user->getId()) {
+			$this->gameRepo->delete($game);
+		}
+
+		$this->redirect("/");
 	}
 
 	function outputPlayers(
@@ -58,7 +72,14 @@ class LobbyPage extends Page {
 	}
 
 	function checkStarted(string $code):void {
-		$game = $this->gameRepo->getByCode($code);
+		try {
+			$game = $this->gameRepo->getByCode($code);
+		}
+		catch(GameCodeNotFoundException $exception) {
+			$this->redirect("/");
+			exit;
+		}
+
 		if($game->isStarted()) {
 			$this->redirect("/game");
 		}

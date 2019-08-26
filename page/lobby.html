@@ -1,15 +1,18 @@
-<h1>Impostor!</h1>
-<h2>Game code: <strong data-bind:text="code">000000</strong></h2>
-<h3>Waiting for players...</h3>
+<div class="c-game-lobby c-list-box">
+	<h1>Impostor!</h1>
+	<h2>Game code: <strong data-bind:text="code">000000</strong></h2>
+	<h3>Waiting for players...</h3>
 
-<ul class="player-list">
-	<li data-template>
-		<img class="userpic" src="/asset/img/default.svg" alt="{name}'s player picture" data-bind:src="webPictureUri" />
-		<span data-bind:text="name">Player name</span>
-	</li>
-</ul>
+	<ul class="player-list">
+		<li data-template>
+			<img class="userpic" src="/asset/img/default.svg" alt="{name}'s player picture" data-bind:src="webPictureUri" />
+			<span data-bind:text="name">Player name</span>
+		</li>
+	</ul>
 
-<form method="post" class="start-form">
-	<button name="do" value="start" disabled>Start!</button>
-	<p data-template="not-enough-players">Game can be started when three or more players are ready.</p>
-</form>
+	<form method="post" class="c-game-controls start-form">
+		<button name="do" value="start" class="positive" disabled>Start!</button>
+		<button name="do" value="leave">Leave</button>
+		<p data-template="not-enough-players">Game can be started when three or more players are ready.</p>
+	</form>
+</div>

@@ -169,7 +169,7 @@ class IndexPage extends Page {
 			}
 		}
 
-		if($turnEl) {
+		if($turnEl && $turn) {
 			$turnEl->bindData($turn);
 		}
 	}

@@ -25,7 +25,7 @@
 </div>
 
 <main>
-	<div class="c-game-guesses list-box">
+	<div class="c-game-guesses c-list-box">
 		<ul>
 			<li data-template>
 				<input id="guess-{id}" type="checkbox" data-bind-parameters />
@@ -46,7 +46,7 @@
 		</ul>
 	</div>
 
-	<div class="c-game-players list-box">
+	<div class="c-game-players c-list-box">
 		<ul>
 			<li data-template>
 				<input id="player-{id}" type="checkbox" data-bind-parameters />
@@ -103,7 +103,7 @@
 		</div>
 
 		<div class="turn" data-template="turn-waiting-ask">
-			<h2>It's <span data-bind:text="answerPlayer">turn</span>'s turn</h2>
+			<h2>It's <span data-bind:text="askPlayer">turn</span>'s turn</h2>
 			<p>We are waiting for them to ask their question.</p>
 		</div>
 

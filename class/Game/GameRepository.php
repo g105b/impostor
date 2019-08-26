@@ -410,6 +410,10 @@ class GameRepository {
 		$this->db->update("completeGame", $game->getId());
 	}
 
+	public function delete(Game $game):void {
+		$this->db->delete("delete", $game->getId());
+	}
+
 	private function gameFromRow(Row $gameRow) {
 		$started = null;
 		if($gameRow->started) {
